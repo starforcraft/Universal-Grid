@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SFS",
+    "SGS",
+    "SCS"
+  ],
+  "key": {
+    "F": { "item": "refinedstorage:wireless_fluid_grid" },
+    "G": { "item": "refinedstorage:wireless_grid" },
+    "C": { "item": "refinedstorageaddons:wireless_crafting_grid" },
+    "S": { "item": "minecraft:shulker_shell" }
+  },
+  "result": {
+    "item": "universalgrid:wireless_universal_grid",
+    "count": 1
+  }
+}

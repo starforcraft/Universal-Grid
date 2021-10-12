@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.YTrollman.UniversalGrid.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "universalgrid.refmap.json",
+  "mixins": [
+      "MixinGridScreen",
+      "MixinGridContainer"
+  ],
+  "minVersion": "0.8"
+}

@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+issueTrackerURL="https://github.com/starforcraft/Universal-Grid/issues/new/choose"
+[[mods]]
+modId="universalgrid"
+version="${file.jarVersion}"
+displayName="Universal Grid"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/universal-grid"
+logoFile="examplemod.png"
+credits="Thanks for downloading this mod."
+authors="YTrollman"
+description="This mod adds a Universal Grid."
+
+[[dependencies.universalgrid]]
+    modId="refinedstorageaddons"
+    mandatory=true
+    versionRange="[0.7.3,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.universalgrid]]
+    modId="refinedstorage"
+    mandatory=true
+    versionRange="[1.9.15,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.universalgrid]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36.1.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.universalgrid]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,)"
+    ordering="NONE"
+    side="BOTH"
