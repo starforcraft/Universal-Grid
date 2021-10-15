@@ -2,19 +2,19 @@ package com.YTrollman.UniversalGrid;
 
 import com.YTrollman.UniversalGrid.config.Config;
 import com.YTrollman.UniversalGrid.handler.ModNetworkHandler;
+import com.YTrollman.UniversalGrid.init.ClientEventHandler;
 import com.YTrollman.UniversalGrid.network.WirelessUniversalGridGridFactory;
 import com.YTrollman.UniversalGrid.registry.ModItems;
 import com.YTrollman.UniversalGrid.registry.RegistryHandler;
 import com.refinedmods.refinedstorage.api.IRSAPI;
 import com.refinedmods.refinedstorage.api.RSAPIInject;
-import com.refinedmods.refinedstorage.item.property.NetworkItemPropertyGetter;
 import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -36,9 +36,10 @@ public class UniversalGrid
 
     public static final String MOD_ID = "universalgrid";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    private static final ResourceLocation CONNECTED = new ResourceLocation("connected");
-    
+
     public UniversalGrid() { //grid, fluid grid, crafting monitor, crafting grid, portable grid
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientEventHandler::new);
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.common_config);
 
         RegistryHandler.init();
@@ -60,9 +61,6 @@ public class UniversalGrid
     private void doClientStuff(FMLClientSetupEvent event)
     {
         ClientRegistry.registerKeyBinding(UniversalGridKeyBindings.OPEN_WIRELESS_UNIVERSAL_GRID);
-
-        ItemModelsProperties.register(ModItems.WIRELESS_UNIVERSAL_GRID.get(), CONNECTED, new NetworkItemPropertyGetter());
-        ItemModelsProperties.register(ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID.get(), CONNECTED, new NetworkItemPropertyGetter());
     }
 
     @SubscribeEvent

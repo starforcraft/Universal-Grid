@@ -71,6 +71,8 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     private final FilterItemHandler filter;
     private Set<ICraftingGridListener> listeners = new HashSet<>();
 
+    public static int type;
+
     private Container craftingContainer = new Container(null, 0) {
         @Override
         public boolean stillValid(PlayerEntity player) {
@@ -385,6 +387,6 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
 
     public int getGridMode()
     {
-        return UniversalGridSwitchGridSideButton.type;
+        return type;
     }
 }
