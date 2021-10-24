@@ -1,15 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SFS",
-    "SGS",
-    "SCS"
+    "DFD",
+    "QGQ",
+    "DCD"
   ],
   "key": {
     "F": { "item": "refinedstorage:wireless_fluid_grid" },
     "G": { "item": "refinedstorage:wireless_grid" },
     "C": { "item": "refinedstorageaddons:wireless_crafting_grid" },
-    "S": { "item": "minecraft:shulker_shell" }
+    "D": { "item": "minecraft:diamond" },
+    "Q": { "item": "refinedstorage:quartz_enriched_iron" }
   },
   "result": {
     "item": "universalgrid:wireless_universal_grid",

@@ -2,8 +2,10 @@ package com.YTrollman.UniversalGrid.items;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
-import com.YTrollman.UniversalGrid.gui.UniversalGridSwitchGridSideButton;
 import com.YTrollman.UniversalGrid.handler.WirelessUniversalGridSettingsUpdateMessage;
+import com.YTrollman.UniversalGrid.handler.WirelessUniversalGridSettingsUpdateMessage2;
+import com.refinedmods.refinedstorage.api.autocrafting.ICraftingManager;
+import com.refinedmods.refinedstorage.api.autocrafting.task.ICraftingTask;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.grid.GridType;
 import com.refinedmods.refinedstorage.api.network.grid.ICraftingGridListener;
@@ -21,9 +23,10 @@ import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.FluidGridSt
 import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.ItemGridStorageCacheListener;
 import com.refinedmods.refinedstorage.inventory.item.FilterItemHandler;
 import com.refinedmods.refinedstorage.item.NetworkItem;
-import com.refinedmods.refinedstorage.item.WirelessGridItem;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
 import com.refinedmods.refinedstorage.screen.grid.GridScreen;
+import com.refinedmods.refinedstorage.tile.craftingmonitor.ICraftingMonitor;
+import com.refinedmods.refinedstorage.tile.data.TileDataParameter;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import com.refinedmods.refinedstorageaddons.RSAddons;
@@ -46,10 +49,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class WirelessUniversalGrid implements INetworkAwareGrid {
     private ItemStack stack;
@@ -66,6 +66,7 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     private int tabSelected;
     private int tabPage;
     private int size;
+    //private Optional<UUID> tabSelected2;
     private final List<IFilter> filters = new ArrayList();
     private final List<IGridTab> tabs = new ArrayList();
     private final FilterItemHandler filter;
@@ -104,17 +105,24 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
         this.nodeDimension = NetworkItem.getDimension(stack);
         this.nodePos = new BlockPos(NetworkItem.getX(stack), NetworkItem.getY(stack), NetworkItem.getZ(stack));
         this.slotId = slotId;
-        this.viewType = WirelessGridItem.getViewType(stack);
-        this.sortingType = WirelessGridItem.getSortingType(stack);
-        this.sortingDirection = WirelessGridItem.getSortingDirection(stack);
-        this.searchBoxMode = WirelessGridItem.getSearchBoxMode(stack);
-        this.tabSelected = WirelessGridItem.getTabSelected(stack);
-        this.tabPage = WirelessGridItem.getTabPage(stack);
-        this.size = WirelessGridItem.getSize(stack);
+        this.viewType = WirelessUniversalGridItem.getViewType(stack);
+        this.sortingType = WirelessUniversalGridItem.getSortingType(stack);
+        this.sortingDirection = WirelessUniversalGridItem.getSortingDirection(stack);
+        this.searchBoxMode = WirelessUniversalGridItem.getSearchBoxMode(stack);
+        this.tabSelected = WirelessUniversalGridItem.getTabSelected(stack);
+        this.tabPage = WirelessUniversalGridItem.getTabPage(stack);
+        this.size = WirelessUniversalGridItem.getSize(stack);
+        //this.tabSelected2 = WirelessUniversalGridItem.getTabSelected2(stack);
         if (stack.hasTag()) {
             StackUtils.readItems(this.filter, 0, stack.getTag());
         }
     }
+
+    /*public void setSettings(Optional<UUID> tabSelected2) {
+        this.tabSelected2 = tabSelected2;
+
+        WirelessUniversalGridItem.setTabSelected2(stack, tabSelected2);
+    }*/
 
     public ItemStack getStack() {
         return this.stack;
@@ -207,6 +215,48 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
         return new TranslationTextComponent("gui.universalgrid.universal_grid");
     }
 
+    /*@Override
+    public void onCancelled(ServerPlayerEntity player, @Nullable UUID uuid) {
+        INetwork network = getNetwork();
+
+        if (network != null) {
+            network.getItemGridHandler().onCraftingCancelRequested(player, uuid);
+        }
+    }
+
+    @Override
+    public TileDataParameter<Integer, ?> getRedstoneModeParameter() {
+        return null;
+    }
+
+    @Override
+    public Collection<ICraftingTask> getTasks() {
+        INetwork network = getNetwork();
+
+        if (network != null) {
+            return network.getCraftingManager().getTasks();
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public ICraftingManager getCraftingManager() {
+        INetwork network = getNetwork();
+
+        if (network != null) {
+            return network.getCraftingManager();
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean isActiveOnClient() {
+        return true;
+    }*/
+
     public int getViewType() {
         return this.viewType;
     }
@@ -230,6 +280,22 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     public int getTabPage() {
         return Math.min(this.tabPage, this.getTotalTabPages());
     }
+
+    /*@Override
+    public Optional<UUID> getTabSelected() {
+        return tabSelected2;
+    }
+
+    @Override
+    public void onTabSelectionChanged(Optional<UUID> taskId) {
+        if (taskId.isPresent() && tabSelected2.isPresent() && taskId.get().equals(tabSelected.get())) {
+            this.tabSelected2 = Optional.empty();
+        } else {
+            this.tabSelected2 = taskId;
+        }
+
+        UniversalGrid.MOD_NETWORK_HANDLER.sendToServer(new WirelessUniversalGridSettingsUpdateMessage2(tabSelected, tabPage));
+    }*/
 
     public int getTotalTabPages() {
         return (int)Math.floor((float)Math.max(0, this.tabs.size() - 1) / 5.0F);
