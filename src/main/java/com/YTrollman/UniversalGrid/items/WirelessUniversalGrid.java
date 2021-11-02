@@ -3,9 +3,6 @@ package com.YTrollman.UniversalGrid.items;
 import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
 import com.YTrollman.UniversalGrid.handler.WirelessUniversalGridSettingsUpdateMessage;
-import com.YTrollman.UniversalGrid.handler.WirelessUniversalGridSettingsUpdateMessage2;
-import com.refinedmods.refinedstorage.api.autocrafting.ICraftingManager;
-import com.refinedmods.refinedstorage.api.autocrafting.task.ICraftingTask;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.grid.GridType;
 import com.refinedmods.refinedstorage.api.network.grid.ICraftingGridListener;
@@ -25,8 +22,6 @@ import com.refinedmods.refinedstorage.inventory.item.FilterItemHandler;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
 import com.refinedmods.refinedstorage.screen.grid.GridScreen;
-import com.refinedmods.refinedstorage.tile.craftingmonitor.ICraftingMonitor;
-import com.refinedmods.refinedstorage.tile.data.TileDataParameter;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import com.refinedmods.refinedstorageaddons.RSAddons;
@@ -49,7 +44,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class WirelessUniversalGrid implements INetworkAwareGrid {
     private ItemStack stack;

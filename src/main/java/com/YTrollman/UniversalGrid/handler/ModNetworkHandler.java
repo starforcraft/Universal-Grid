@@ -20,7 +20,7 @@ public class ModNetworkHandler {
     public void register() {
         int id = 0;
         this.handler.registerMessage(id++, WirelessUniversalGridSettingsUpdateMessage.class, WirelessUniversalGridSettingsUpdateMessage::encode, WirelessUniversalGridSettingsUpdateMessage::decode, WirelessUniversalGridSettingsUpdateMessage::handle);
-        this.handler.registerMessage(id++, WirelessUniversalGridSettingsUpdateMessage2.class, WirelessUniversalGridSettingsUpdateMessage2::encode, WirelessUniversalGridSettingsUpdateMessage2::decode, WirelessUniversalGridSettingsUpdateMessage2::handle);
+        //this.handler.registerMessage(id++, WirelessUniversalGridSettingsUpdateMessage2.class, WirelessUniversalGridSettingsUpdateMessage2::encode, WirelessUniversalGridSettingsUpdateMessage2::decode, WirelessUniversalGridSettingsUpdateMessage2::handle);
     }
 
     public void sendToServer(Object message) {

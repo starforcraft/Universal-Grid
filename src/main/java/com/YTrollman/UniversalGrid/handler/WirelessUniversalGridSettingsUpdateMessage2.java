@@ -1,4 +1,4 @@
-package com.YTrollman.UniversalGrid.handler;
+/*package com.YTrollman.UniversalGrid.handler;
 
 import com.refinedmods.refinedstorage.container.CraftingMonitorContainer;
 import com.refinedmods.refinedstorage.tile.craftingmonitor.WirelessCraftingMonitor;
@@ -48,4 +48,4 @@ public class WirelessUniversalGridSettingsUpdateMessage2 {
         ctx.get().setPacketHandled(true);
     }
 }
-
+*/

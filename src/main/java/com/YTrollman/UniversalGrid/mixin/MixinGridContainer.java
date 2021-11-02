@@ -1,6 +1,7 @@
 package com.YTrollman.UniversalGrid.mixin;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.items.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.api.storage.cache.IStorageCache;
 import com.refinedmods.refinedstorage.api.storage.cache.IStorageCacheListener;
@@ -34,8 +35,9 @@ public abstract class MixinGridContainer extends BaseContainer {
      */
     @Overwrite
     public void broadcastChanges() {
-        if(getGrid() instanceof UniversalGrid)
+        if(getGrid() instanceof WirelessUniversalGrid)
         {
+            UniversalGrid.LOGGER.info("asd");
             if (!getPlayer().level.isClientSide) {
                 if (grid.getStorageCache() == null) {
                     if (storageCacheListener != null) {
