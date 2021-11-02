@@ -12,11 +12,14 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 
 import javax.annotation.Nullable;
 
 @Mixin(value = GridContainer.class, remap = false)
 public abstract class MixinGridContainer extends BaseContainer {
+
+    @Shadow public abstract IGrid getGrid();
 
     private IGrid grid;
     private IStorageCache storageCache;
@@ -31,7 +34,7 @@ public abstract class MixinGridContainer extends BaseContainer {
      */
     @Overwrite
     public void broadcastChanges() {
-        if(grid instanceof UniversalGrid)
+        if(getGrid() instanceof UniversalGrid)
         {
             if (!getPlayer().level.isClientSide) {
                 if (grid.getStorageCache() == null) {

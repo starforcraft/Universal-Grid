@@ -25,6 +25,9 @@ repositories {
     	name = "ModMaven"
     	url = "https://modmaven.k-4u.nl"
   	}
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
   	maven {
     	url "https://www.cursemaven.com"
   	}
@@ -122,6 +125,8 @@ dependencies {
     implementation fg.deobf("curse.maven:refinedstorage-243076:3400575")
     implementation fg.deobf("curse.maven:refinedstorageaddons-272302:3400591")
     compileOnly fg.deobf('curse.maven:mouse-tweaks-60089:3202662')
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
 
     implementation fg.deobf("curse.maven:powah-352656:3232535")
     implementation fg.deobf("curse.maven:lollipop-347954:3232534")
