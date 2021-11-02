@@ -37,7 +37,6 @@ public abstract class MixinGridContainer extends BaseContainer {
     public void broadcastChanges() {
         if(getGrid() instanceof WirelessUniversalGrid)
         {
-            UniversalGrid.LOGGER.info("asd");
             if (!getPlayer().level.isClientSide) {
                 if (grid.getStorageCache() == null) {
                     if (storageCacheListener != null) {
