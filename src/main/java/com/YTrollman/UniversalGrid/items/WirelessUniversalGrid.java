@@ -19,12 +19,14 @@ import com.refinedmods.refinedstorage.api.util.IStackList;
 import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.FluidGridStorageCacheListener;
 import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.ItemGridStorageCacheListener;
 import com.refinedmods.refinedstorage.inventory.item.FilterItemHandler;
+import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
 import com.refinedmods.refinedstorage.screen.grid.GridScreen;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import com.refinedmods.refinedstorageaddons.RSAddons;
+import com.refinedmods.refinedstorageaddons.item.WirelessCraftingGrid;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.CraftResultInventory;
@@ -37,6 +39,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.concurrent.TickDelayedTask;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -56,7 +59,7 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     private final World world;
     private final RegistryKey<World> nodeDimension;
     private final BlockPos nodePos;
-    private final int slotId;
+    private final PlayerSlot slot;
     private int viewType;
     private int sortingType;
     private int sortingDirection;
@@ -67,8 +70,15 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     //private Optional<UUID> tabSelected2;
     private final List<IFilter> filters = new ArrayList();
     private final List<IGridTab> tabs = new ArrayList();
-    private final FilterItemHandler filter;
+    private final FilterItemHandler filter = (FilterItemHandler)(new FilterItemHandler(this.filters, this.tabs)).addListener((handler, slot, reading) -> {
+        if (!this.stack.hasTag()) {
+            this.stack.setTag(new CompoundNBT());
+        }
+
+        StackUtils.writeItems(handler, 0, this.stack.getTag());
+    });;
     private Set<ICraftingGridListener> listeners = new HashSet<>();
+    private boolean queuedSave;
 
     public static int type;
 
@@ -86,23 +96,32 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
         }
     };
     private ICraftingRecipe currentRecipe;
-    private CraftingInventory matrix = new CraftingInventory(craftingContainer, 3, 3);
-    private CraftResultInventory result = new CraftResultInventory();
+    private CraftingInventory matrix = new CraftingInventory(this.craftingContainer, 3, 3) {
+        public void setChanged() {
+            super.setChanged();
+            if (!queuedSave && server != null) {
+                queuedSave = true;
+                server.tell(new TickDelayedTask(0, () -> {
+                    if (!getStack().hasTag()) {
+                        getStack().setTag(new CompoundNBT());
+                    }
 
-    public WirelessUniversalGrid(ItemStack stack, World world, @Nullable MinecraftServer server, int slotId) {
-        this.filter = (FilterItemHandler)(new FilterItemHandler(this.filters, this.tabs)).addListener((handler, slot, reading) -> {
-            if (!this.stack.hasTag()) {
-                this.stack.setTag(new CompoundNBT());
+                    StackUtils.writeItems(matrix, 1, getStack().getTag());
+                    queuedSave = false;
+                }));
             }
 
-            StackUtils.writeItems(handler, 0, this.stack.getTag());
-        });
+        }
+    };
+    private CraftResultInventory result = new CraftResultInventory();
+
+    public WirelessUniversalGrid(ItemStack stack, World world, @Nullable MinecraftServer server, PlayerSlot slot) {
         this.stack = stack;
         this.server = server;
         this.world = world;
         this.nodeDimension = NetworkItem.getDimension(stack);
         this.nodePos = new BlockPos(NetworkItem.getX(stack), NetworkItem.getY(stack), NetworkItem.getZ(stack));
-        this.slotId = slotId;
+        this.slot = slot;
         this.viewType = WirelessUniversalGridItem.getViewType(stack);
         this.sortingType = WirelessUniversalGridItem.getSortingType(stack);
         this.sortingDirection = WirelessUniversalGridItem.getSortingDirection(stack);
@@ -439,7 +458,7 @@ public class WirelessUniversalGrid implements INetworkAwareGrid {
     }
 
     public int getSlotId() {
-        return this.slotId;
+        return slot.getSlotIdInPlayerInventory();
     }
 
     public void onClosed(PlayerEntity player) {

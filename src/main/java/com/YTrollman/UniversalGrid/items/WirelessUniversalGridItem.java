@@ -5,6 +5,7 @@ import com.YTrollman.UniversalGrid.network.WirelessUniversalGridNetworkItem;
 import com.YTrollman.UniversalGrid.registry.ItemGroupUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
+import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -39,8 +40,8 @@ public class WirelessUniversalGridItem extends NetworkItem {
 
     @Override
     @Nonnull
-    public INetworkItem provide(INetworkItemManager handler, PlayerEntity player, ItemStack stack, int slotId) {
-        return new WirelessUniversalGridNetworkItem(handler, player, stack, slotId);
+    public INetworkItem provide(INetworkItemManager handler, PlayerEntity player, ItemStack stack, PlayerSlot slot) {
+        return new WirelessUniversalGridNetworkItem(handler, player, stack, slot);
     }
 
     public static int getViewType(ItemStack stack) {

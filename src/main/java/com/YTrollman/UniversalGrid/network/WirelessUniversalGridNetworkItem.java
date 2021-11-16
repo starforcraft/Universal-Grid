@@ -7,6 +7,7 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.apiimpl.API;
+import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.WorldUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -19,13 +20,13 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
     private INetworkItemManager handler;
     private PlayerEntity player;
     private ItemStack stack;
-    private int slotId;
+    private PlayerSlot slot;
 
-    public WirelessUniversalGridNetworkItem(INetworkItemManager handler, PlayerEntity player, ItemStack stack, int slotId) {
+    public WirelessUniversalGridNetworkItem(INetworkItemManager handler, PlayerEntity player, ItemStack stack, PlayerSlot slot) {
         this.handler = handler;
         this.player = player;
         this.stack = stack;
-        this.slotId = slotId;
+        this.slot = slot;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
             return false;
         }
 
-        API.instance().getGridManager().openGrid(WirelessUniversalGridGridFactory.ID, (ServerPlayerEntity) player, stack, slotId);
+        API.instance().getGridManager().openGrid(WirelessUniversalGridGridFactory.ID, (ServerPlayerEntity) player, stack, slot);
 
         drainEnergy(UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get());
 

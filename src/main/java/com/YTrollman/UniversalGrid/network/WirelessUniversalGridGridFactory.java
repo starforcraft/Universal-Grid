@@ -5,6 +5,7 @@ import com.YTrollman.UniversalGrid.items.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.GridFactoryType;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGridFactory;
+import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,8 +20,8 @@ public class WirelessUniversalGridGridFactory implements IGridFactory {
 
     @Nullable
     @Override
-    public IGrid createFromStack(PlayerEntity player, ItemStack stack, int slotId) {
-        return new WirelessUniversalGrid(stack, player.level, player.getServer(), slotId);
+    public IGrid createFromStack(PlayerEntity player, ItemStack stack, PlayerSlot slot) {
+        return new WirelessUniversalGrid(stack, player.level, player.getServer(), slot);
     }
 
     @Nullable

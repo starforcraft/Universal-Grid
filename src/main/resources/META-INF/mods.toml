@@ -22,7 +22,7 @@ description="This mod adds a Universal Grid."
 [[dependencies.universalgrid]]
     modId="refinedstorage"
     mandatory=true
-    versionRange="[1.9.15,)"
+    versionRange="[1.9.16,)"
     ordering="NONE"
     side="BOTH"
 
