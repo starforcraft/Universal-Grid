@@ -9,14 +9,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 public class ItemGroupUniversalGrid {
+	public static final ItemGroup UNIVERSAL_GRID = (new ItemGroup(UniversalGrid.MOD_ID) {
 
-    public static final ItemGroup UNIVERSAL_GRID = (new ItemGroup(UniversalGrid.MOD_ID) {
-
-        @Override
-        @Nonnull
-        @OnlyIn(Dist.CLIENT)
-        public ItemStack makeIcon() {
-            return new ItemStack(ModItems.WIRELESS_UNIVERSAL_GRID.get());
-        }
-    });
+		@Override
+		@Nonnull
+		@OnlyIn(Dist.CLIENT)
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID);
+		}
+	});
 }

@@ -1,7 +1,7 @@
-package com.YTrollman.UniversalGrid.network;
+package com.YTrollman.UniversalGrid.apiiml.network.grid;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
-import com.YTrollman.UniversalGrid.items.WirelessUniversalGrid;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.GridFactoryType;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGridFactory;

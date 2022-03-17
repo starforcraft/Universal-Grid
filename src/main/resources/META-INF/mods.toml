@@ -13,16 +13,9 @@ authors="YTrollman"
 description="This mod adds a Universal Grid."
 
 [[dependencies.universalgrid]]
-    modId="refinedstorageaddons"
-    mandatory=true
-    versionRange="[0.7.3,)"
-    ordering="NONE"
-    side="BOTH"
-
-[[dependencies.universalgrid]]
     modId="refinedstorage"
     mandatory=true
-    versionRange="[1.9.16,)"
+    versionRange="[1.9.17,)"
     ordering="NONE"
     side="BOTH"
 

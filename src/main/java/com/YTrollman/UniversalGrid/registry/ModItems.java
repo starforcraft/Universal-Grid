@@ -1,16 +1,12 @@
 package com.YTrollman.UniversalGrid.registry;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
-import com.YTrollman.UniversalGrid.items.WirelessUniversalGridItem;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGridItem;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ModItems {
-
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, UniversalGrid.MOD_ID);
-
-    public static final RegistryObject<Item> WIRELESS_UNIVERSAL_GRID = ITEMS.register("wireless_universal_grid", () -> new WirelessUniversalGridItem(WirelessUniversalGridItem.Type.NORMAL));
-    public static final RegistryObject<Item> CREATIVE_WIRELESS_UNIVERSAL_GRID = ITEMS.register("creative_wireless_universal_grid", () -> new WirelessUniversalGridItem(WirelessUniversalGridItem.Type.CREATIVE));
+    @ObjectHolder(UniversalGrid.MOD_ID + ":wireless_universal_grid")
+    public static final WirelessUniversalGridItem WIRELESS_UNIVERSAL_GRID = null;
+    @ObjectHolder(UniversalGrid.MOD_ID + ":creative_wireless_universal_grid")
+    public static final WirelessUniversalGridItem CREATIVE_WIRELESS_UNIVERSAL_GRID = null;
 }
