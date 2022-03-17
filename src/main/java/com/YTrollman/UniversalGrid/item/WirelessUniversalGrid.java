@@ -137,7 +137,8 @@ public class WirelessUniversalGrid extends WirelessGrid {
         if(getGridType() != GridType.FLUID) {
             return null;
         } else {
-            return super.getFluidHandler();
+            INetwork network = this.getNetwork();
+            return network != null ? network.getFluidGridHandler() : null;
         }
     }
 
