@@ -1,6 +1,7 @@
 package com.YTrollman.UniversalGrid.apiiml.network.item;
 
 import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridGridFactory;
+import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
 import com.YTrollman.UniversalGrid.item.WirelessUniversalGridItem;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
@@ -9,7 +10,6 @@ import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.WorldUtils;
-import com.refinedmods.refinedstorageaddons.RSAddons;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -39,10 +39,10 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
     public boolean onOpen(INetwork network) {
         IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
 
-        if (RSAddons.SERVER_CONFIG.getWirelessCraftingGrid().getUseEnergy() &&
+        if (UniversalGridConfig.UNIVERSAL_GRID_USE_ENERGY.get() &&
                 ((WirelessUniversalGridItem) stack.getItem()).getType() != WirelessUniversalGridItem.Type.CREATIVE &&
                 energy != null &&
-                energy.getEnergyStored() <= RSAddons.SERVER_CONFIG.getWirelessCraftingGrid().getOpenUsage()) {
+                energy.getEnergyStored() <= UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get()) {
             sendOutOfEnergyMessage();
 
             return false;
@@ -56,14 +56,14 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
 
         API.instance().getGridManager().openGrid(WirelessUniversalGridGridFactory.ID, (ServerPlayerEntity) player, stack, slot);
 
-        drainEnergy(RSAddons.SERVER_CONFIG.getWirelessCraftingGrid().getOpenUsage());
+        drainEnergy(UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get());
 
         return true;
     }
 
     @Override
     public void drainEnergy(int energy) {
-        if (RSAddons.SERVER_CONFIG.getWirelessCraftingGrid().getUseEnergy() && ((WirelessUniversalGridItem) stack.getItem()).getType() != WirelessUniversalGridItem.Type.CREATIVE) {
+        if (UniversalGridConfig.UNIVERSAL_GRID_USE_ENERGY.get() && ((WirelessUniversalGridItem) stack.getItem()).getType() != WirelessUniversalGridItem.Type.CREATIVE) {
             stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
                 energyStorage.extractEnergy(energy, false);
 

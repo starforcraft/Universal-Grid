@@ -2,6 +2,7 @@ package com.YTrollman.UniversalGrid.item;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.YTrollman.UniversalGrid.apiiml.network.item.WirelessUniversalGridNetworkItem;
+import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
 import com.YTrollman.UniversalGrid.registry.ItemGroupUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
@@ -9,7 +10,6 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
-import com.refinedmods.refinedstorageaddons.RSAddons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -32,7 +32,7 @@ public class WirelessUniversalGridItem extends NetworkItem {
     public WirelessUniversalGridItem(Type type) {
         super(new Item.Properties().tab(ItemGroupUniversalGrid.UNIVERSAL_GRID).stacksTo(1),
                 type == Type.CREATIVE,
-                () -> RSAddons.SERVER_CONFIG.getWirelessCraftingGrid().getCapacity());
+                () -> UniversalGridConfig.UNIVERSAL_GRID_CAPACITY.get());
 
         this.type = type;
 

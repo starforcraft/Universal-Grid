@@ -110,7 +110,6 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}")
 
     implementation fg.deobf("curse.maven:refinedstorage-243076:3630064")
-    implementation fg.deobf("curse.maven:refinedstorageaddons-272302:3527508")
     compileOnly fg.deobf('curse.maven:mouse-tweaks-60089:3202662')
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
