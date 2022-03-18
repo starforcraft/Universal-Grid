@@ -3,7 +3,6 @@ package com.YTrollman.UniversalGrid.apiiml.network.grid;
 import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.container.GridContainer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -56,14 +55,8 @@ public class WirelessUniversalGridSettingsUpdateMessage {
                         ((GridContainer) player.containerMenu).initSlots();
                         player.containerMenu.broadcastChanges();
 
-                        //double MouseX = Minecraft.getInstance().mouseHandler.xpos();
-                        //double MouseY = Minecraft.getInstance().mouseHandler.ypos();
-
                         player.closeContainer();
                         stack.use(player.level, player, player.getUsedItemHand());
-
-                        //Minecraft.getInstance().mouseHandler.xpos = MouseX;
-                        //Minecraft.getInstance().mouseHandler.ypos = MouseY;
                     }
                 }
             });
