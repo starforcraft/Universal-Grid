@@ -2,6 +2,7 @@ package com.YTrollman.UniversalGrid;
 
 import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridGridFactory;
 import com.YTrollman.UniversalGrid.config.Config;
+import com.YTrollman.UniversalGrid.init.ClientEventHandler;
 import com.YTrollman.UniversalGrid.item.WirelessUniversalGridItem;
 import com.YTrollman.UniversalGrid.registry.ModItems;
 import com.YTrollman.UniversalGrid.registry.ModKeyBindings;
@@ -14,10 +15,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -46,6 +49,7 @@ public class UniversalGrid {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::onRegisterItems);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientEventHandler::new);
 
         MinecraftForge.EVENT_BUS.addListener(this::onKeyInput);
     }
@@ -56,9 +60,6 @@ public class UniversalGrid {
     }
 
     private void doClientStuff(FMLClientSetupEvent event) {
-        ItemModelsProperties.register(ModItems.WIRELESS_UNIVERSAL_GRID, new ResourceLocation("connected"), new NetworkItemPropertyGetter());
-        ItemModelsProperties.register(ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID, new ResourceLocation("connected"), new NetworkItemPropertyGetter());
-
         ClientRegistry.registerKeyBinding(ModKeyBindings.OPEN_WIRELESS_UNIVERSAL_GRID);
     }
 
