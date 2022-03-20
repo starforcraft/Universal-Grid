@@ -10,14 +10,14 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.item.NetworkItem;
 import com.refinedmods.refinedstorage.util.NetworkUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -40,11 +40,11 @@ public class WirelessUniversalGridItem extends NetworkItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (!world.isClientSide() && entity instanceof PlayerEntity) {
-            CompoundNBT tag = stack.getTag();
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        if (!level.isClientSide() && entity instanceof Player) {
+            CompoundTag tag = stack.getTag();
             if (tag == null) {
-                tag = new CompoundNBT();
+                tag = new CompoundTag();
             }
 
             if(!tag.contains("gridType")) {
@@ -55,13 +55,13 @@ public class WirelessUniversalGridItem extends NetworkItem {
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext ctx) {
+    public InteractionResult useOn(UseOnContext ctx) {
         ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
-        INetwork network = NetworkUtils.getNetworkFromNode(NetworkUtils.getNodeFromTile(ctx.getLevel().getBlockEntity(ctx.getClickedPos())));
+        INetwork network = NetworkUtils.getNetworkFromNode(NetworkUtils.getNodeFromBlockEntity(ctx.getLevel().getBlockEntity(ctx.getClickedPos())));
         if (network != null) {
-            CompoundNBT tag = stack.getTag();
+            CompoundTag tag = stack.getTag();
             if (tag == null) {
-                tag = new CompoundNBT();
+                tag = new CompoundTag();
             }
 
             tag.putInt("NodeX", network.getPosition().getX());
@@ -69,9 +69,9 @@ public class WirelessUniversalGridItem extends NetworkItem {
             tag.putInt("NodeZ", network.getPosition().getZ());
             tag.putString("Dimension", ctx.getLevel().dimension().location().toString());
             stack.setTag(tag);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
     }
 
@@ -81,10 +81,7 @@ public class WirelessUniversalGridItem extends NetworkItem {
 
     @Override
     @Nonnull
-    public INetworkItem provide(INetworkItemManager handler, PlayerEntity player, ItemStack stack, PlayerSlot slot) {
-        //if(!player.isCrouching())
-            return new WirelessUniversalGridNetworkItem(handler, player, stack, slot);
-        //else
-            //return null;
+    public INetworkItem provide(INetworkItemManager handler, Player player, ItemStack stack, PlayerSlot slot) {
+        return new WirelessUniversalGridNetworkItem(handler, player, stack, slot);
     }
 }

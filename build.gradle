@@ -1,12 +1,11 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -20,23 +19,22 @@ repositories {
     	name = "Progwml6 maven"
     	url = "https://dvs1.progwml6.com/files/maven/"
   	}
-  	maven {
-    	name = "ModMaven"
-    	url = "https://modmaven.k-4u.nl"
-  	}
     maven {
         url = "https://maven.theillusivec4.top/"
     }
-  	maven {
-    	url "https://www.cursemaven.com"
-  	}
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 version = "${mod_version}"
 group = "com.YTrollman.UniversalGrid"
 archivesBaseName = "${modid}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -99,24 +97,18 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-mixin {
-    add sourceSets.main, "${modid}.refmap.json"
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    compileOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:${jei_version}")
 
-    implementation fg.deobf("curse.maven:refinedstorage-243076:3630064")
-    compileOnly fg.deobf('curse.maven:mouse-tweaks-60089:3202662')
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2:api")
+    implementation fg.deobf("curse.maven:refinedstorage-243076:3623324")
+    compileOnly fg.deobf('curse.maven:mouse-tweaks-60089:3601896')
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4:api")
 
-    implementation fg.deobf("curse.maven:libx-412525:3329216")
-    implementation fg.deobf("curse.maven:powah-352656:3232535")
-    implementation fg.deobf("curse.maven:lollipop-347954:3232534")
+    implementation fg.deobf("curse.maven:libx-412525:3667631")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }

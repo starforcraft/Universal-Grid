@@ -9,21 +9,21 @@ import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.apiimpl.API;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
-import com.refinedmods.refinedstorage.util.WorldUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.refinedmods.refinedstorage.util.LevelUtils;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class WirelessUniversalGridNetworkItem implements INetworkItem {
     private INetworkItemManager handler;
-    private PlayerEntity player;
+    private Player player;
     private ItemStack stack;
     private PlayerSlot slot;
 
-    public WirelessUniversalGridNetworkItem(INetworkItemManager handler, PlayerEntity player, ItemStack stack, PlayerSlot slot) {
+    public WirelessUniversalGridNetworkItem(INetworkItemManager handler, Player player, ItemStack stack, PlayerSlot slot) {
         this.handler = handler;
         this.player = player;
         this.stack = stack;
@@ -31,7 +31,7 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
     }
 
     @Override
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -49,12 +49,12 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
         }
 
         if (!network.getSecurityManager().hasPermission(Permission.MODIFY, player)) {
-            WorldUtils.sendNoPermissionMessage(player);
+            LevelUtils.sendNoPermissionMessage(player);
 
             return false;
         }
 
-        API.instance().getGridManager().openGrid(WirelessUniversalGridGridFactory.ID, (ServerPlayerEntity) player, stack, slot);
+        API.instance().getGridManager().openGrid(WirelessUniversalGridGridFactory.ID, (ServerPlayer) player, stack, slot);
 
         drainEnergy(UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get());
 
@@ -79,6 +79,6 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
     }
 
     private void sendOutOfEnergyMessage() {
-        player.sendMessage(new TranslationTextComponent("misc.refinedstorage.network_item.out_of_energy", new TranslationTextComponent(stack.getItem().getDescriptionId())), player.getUUID());
+        player.sendMessage(new TranslatableComponent("misc.refinedstorage.network_item.out_of_energy", new TranslatableComponent(stack.getItem().getDescriptionId())), player.getUUID());
     }
 }

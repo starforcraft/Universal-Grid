@@ -9,25 +9,22 @@ import com.YTrollman.UniversalGrid.registry.ModKeyBindings;
 import com.YTrollman.UniversalGrid.registry.ModNetworkHandler;
 import com.refinedmods.refinedstorage.api.IRSAPI;
 import com.refinedmods.refinedstorage.api.RSAPIInject;
-import com.refinedmods.refinedstorage.item.property.NetworkItemPropertyGetter;
 import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +61,7 @@ public class UniversalGrid {
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onServerStarting(ServerStartingEvent event) {
     	
     }
 

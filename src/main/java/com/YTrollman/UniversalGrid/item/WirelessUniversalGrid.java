@@ -13,23 +13,23 @@ import com.refinedmods.refinedstorage.api.storage.cache.IStorageCacheListener;
 import com.refinedmods.refinedstorage.api.util.Action;
 import com.refinedmods.refinedstorage.api.util.IStackList;
 import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.FluidGridStorageCacheListener;
+import com.refinedmods.refinedstorage.blockentity.grid.WirelessGrid;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
-import com.refinedmods.refinedstorage.tile.grid.WirelessGrid;
 import com.refinedmods.refinedstorage.util.StackUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -38,33 +38,33 @@ import java.util.Set;
 public class WirelessUniversalGrid extends WirelessGrid {
     @Nullable
     private final MinecraftServer server;
-    private final World world;
+    private final Level level;
     private Set<ICraftingGridListener> listeners = new HashSet<>();
 
-    private Container craftingContainer = new Container(null, 0) {
+    private AbstractContainerMenu craftingContainer = new AbstractContainerMenu(null, 0) {
         @Override
-        public boolean stillValid(PlayerEntity player) {
+        public boolean stillValid(Player player) {
             return false;
         }
 
         @Override
-        public void slotsChanged(IInventory inventory) {
+        public void slotsChanged(Container container) {
             if (server != null) {
                 onCraftingMatrixChanged();
             }
         }
     };
-    private ICraftingRecipe currentRecipe;
-    private CraftingInventory matrix = new CraftingInventory(craftingContainer, 3, 3);
-    private CraftResultInventory result = new CraftResultInventory();
+    private CraftingRecipe currentRecipe;
+    private CraftingContainer matrix = new CraftingContainer(craftingContainer, 3, 3);
+    private ResultContainer result = new ResultContainer();
 
     private final int gridType;
 
-    public WirelessUniversalGrid(ItemStack stack, World world, @Nullable MinecraftServer server, PlayerSlot slot) {
+    public WirelessUniversalGrid(ItemStack stack, Level level, @Nullable MinecraftServer server, PlayerSlot slot) {
         super(stack, server, slot);
 
         this.server = server;
-        this.world = world;
+        this.level = level;
 
         gridType = stack.getTag().getInt("gridType");
 
@@ -74,8 +74,8 @@ public class WirelessUniversalGrid extends WirelessGrid {
     }
 
     @Override
-    public ITextComponent getTitle() {
-        return new TranslationTextComponent("gui.universalgrid.universal_grid");
+    public Component getTitle() {
+        return new TranslatableComponent("gui.universalgrid.universal_grid");
     }
 
     @Override
@@ -92,17 +92,17 @@ public class WirelessUniversalGrid extends WirelessGrid {
     }
 
     @Override
-    public CraftingInventory getCraftingMatrix() {
+    public CraftingContainer getCraftingMatrix() {
         return matrix;
     }
 
     @Override
-    public CraftResultInventory getCraftingResult() {
+    public ResultContainer getCraftingResult() {
         return result;
     }
 
     @Override
-    public IStorageCacheListener createListener(ServerPlayerEntity player) {
+    public IStorageCacheListener createListener(ServerPlayer player) {
         if(getGridType() != GridType.FLUID) {
             return super.createListener(player);
         } else {
@@ -144,8 +144,8 @@ public class WirelessUniversalGrid extends WirelessGrid {
 
     @Override
     public void onCraftingMatrixChanged() {
-        if (currentRecipe == null || !currentRecipe.matches(matrix, world)) {
-            currentRecipe = world.getRecipeManager().getRecipeFor(IRecipeType.CRAFTING, matrix, world).orElse(null);
+        if (currentRecipe == null || !currentRecipe.matches(matrix, level)) {
+            currentRecipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, matrix, level).orElse(null);
         }
 
         if (currentRecipe == null) {
@@ -157,14 +157,14 @@ public class WirelessUniversalGrid extends WirelessGrid {
         listeners.forEach(ICraftingGridListener::onCraftingMatrixChanged);
 
         if (!getStack().hasTag()) {
-            getStack().setTag(new CompoundNBT());
+            getStack().setTag(new CompoundTag());
         }
 
         StackUtils.writeItems(matrix, 1, getStack().getTag());
     }
 
     @Override
-    public void onCrafted(PlayerEntity player, @Nullable IStackList<ItemStack> availableItems, @Nullable IStackList<ItemStack> usedItems) {
+    public void onCrafted(Player player, @Nullable IStackList<ItemStack> availableItems, @Nullable IStackList<ItemStack> usedItems) {
         UniversalGrid.RSAPI.getCraftingGridBehavior().onCrafted(this, currentRecipe, player, availableItems, usedItems);
 
         INetwork network = getNetwork();
@@ -175,7 +175,7 @@ public class WirelessUniversalGrid extends WirelessGrid {
     }
 
     @Override
-    public void onClear(PlayerEntity player) {
+    public void onClear(Player player) {
         INetwork network = getNetwork();
 
         if (network != null && network.getSecurityManager().hasPermission(Permission.INSERT, player)) {
@@ -194,12 +194,12 @@ public class WirelessUniversalGrid extends WirelessGrid {
     }
 
     @Override
-    public void onCraftedShift(PlayerEntity player) {
+    public void onCraftedShift(Player player) {
         UniversalGrid.RSAPI.getCraftingGridBehavior().onCraftedShift(this, player);
     }
 
     @Override
-    public void onRecipeTransfer(PlayerEntity player, ItemStack[][] recipe) {
+    public void onRecipeTransfer(Player player, ItemStack[][] recipe) {
         UniversalGrid.RSAPI.getCraftingGridBehavior().onRecipeTransfer(this, player, recipe);
     }
 

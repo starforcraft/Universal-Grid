@@ -1,15 +1,15 @@
 package com.YTrollman.UniversalGrid.registry;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
 public class ItemGroupUniversalGrid {
-	public static final ItemGroup UNIVERSAL_GRID = (new ItemGroup(UniversalGrid.MOD_ID) {
+	public static final CreativeModeTab UNIVERSAL_GRID = (new CreativeModeTab(UniversalGrid.MOD_ID) {
 
 		@Override
 		@Nonnull
