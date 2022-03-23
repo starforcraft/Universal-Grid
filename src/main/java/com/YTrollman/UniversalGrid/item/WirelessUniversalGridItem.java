@@ -82,9 +82,6 @@ public class WirelessUniversalGridItem extends NetworkItem {
     @Override
     @Nonnull
     public INetworkItem provide(INetworkItemManager handler, PlayerEntity player, ItemStack stack, PlayerSlot slot) {
-        //if(!player.isCrouching())
-            return new WirelessUniversalGridNetworkItem(handler, player, stack, slot);
-        //else
-            //return null;
+        return new WirelessUniversalGridNetworkItem(handler, player, stack, slot);
     }
 }
