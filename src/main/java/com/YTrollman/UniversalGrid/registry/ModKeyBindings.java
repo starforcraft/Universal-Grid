@@ -12,7 +12,7 @@ public class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             KeyModifier.CONTROL,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_Z,
+            GLFW.GLFW_KEY_H,
             "Universal Grid"
     );
 }
