@@ -1,10 +1,8 @@
 package com.YTrollman.UniversalGrid.apiiml.network.grid;
 
 import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
-import com.YTrollman.UniversalGrid.registry.ModItems;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.container.GridContainerMenu;
-import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +56,6 @@ public class WirelessUniversalGridSettingsUpdateMessage {
                         player.containerMenu.broadcastChanges();
 
                         player.closeContainer();
-                        KeyInputListener.findAndOpen(ModItems.WIRELESS_UNIVERSAL_GRID, ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID);
                     }
                 }
             });
