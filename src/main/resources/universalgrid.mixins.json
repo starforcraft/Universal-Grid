@@ -2,7 +2,7 @@
   "required": true,
   "package": "com.YTrollman.UniversalGrid.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "ultramega.refmap.json",
+  "refmap": "universalgrid.refmap.json",
   "mixins": [
     "MixinGridScreen"
   ],
