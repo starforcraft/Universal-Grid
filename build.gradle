@@ -15,10 +15,9 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
 repositories {
-  	maven {
-    	name = "Progwml6 maven"
-    	url = "https://dvs1.progwml6.com/files/maven/"
-  	}
+    maven {
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
     maven {
         url = "https://maven.theillusivec4.top/"
     }
@@ -26,6 +25,19 @@ repositories {
         url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
+        }
+    }
+    maven {
+        url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
+        /* As of december 2021, GitHub packages requires authentication.
+           The password below is a personal access token that has read access to the Refined Mods repos.
+           It can be reused in other projects.
+           See: https://github.community/t/download-from-github-package-registry-without-authentication/14407/38 and
+                https://github.community/t/download-from-github-package-registry-without-authentication/14407/44
+         */
+        credentials {
+            username = "anything"
+            password = "\u0067hp_oGjcDFCn8jeTzIj4Ke9pLoEVtpnZMP4VQgaX"
         }
     }
 }
@@ -98,15 +110,13 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:${jei_version}")
 
-    implementation fg.deobf("curse.maven:refinedstorage-243076:3712882")
-    compileOnly fg.deobf('curse.maven:mouse-tweaks-60089:3601896')
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3:api")
-
-    implementation fg.deobf("curse.maven:libx-412525:3755838")
+    implementation fg.deobf("com.refinedmods:refinedstorage:${rs_version}") {
+        transitive false
+    }
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0:api")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }

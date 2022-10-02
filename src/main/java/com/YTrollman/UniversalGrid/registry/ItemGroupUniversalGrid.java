@@ -15,7 +15,7 @@ public class ItemGroupUniversalGrid {
 		@Nonnull
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID);
+			return new ItemStack(ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID.get());
 		}
 	});
 }

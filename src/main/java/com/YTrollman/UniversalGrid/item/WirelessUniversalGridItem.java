@@ -1,6 +1,5 @@
 package com.YTrollman.UniversalGrid.item;
 
-import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.YTrollman.UniversalGrid.apiiml.network.item.WirelessUniversalGridNetworkItem;
 import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
 import com.YTrollman.UniversalGrid.registry.ItemGroupUniversalGrid;
@@ -31,12 +30,9 @@ public class WirelessUniversalGridItem extends NetworkItem {
 
     public WirelessUniversalGridItem(Type type) {
         super(new Item.Properties().tab(ItemGroupUniversalGrid.UNIVERSAL_GRID).stacksTo(1),
-                type == Type.CREATIVE,
-                () -> UniversalGridConfig.UNIVERSAL_GRID_CAPACITY.get());
+                type == Type.CREATIVE, ()-> UniversalGridConfig.UNIVERSAL_GRID_CAPACITY.get());
 
         this.type = type;
-
-        this.setRegistryName(UniversalGrid.MOD_ID, (type == Type.CREATIVE ? "creative_" : "") + "wireless_universal_grid");
     }
 
     @Override

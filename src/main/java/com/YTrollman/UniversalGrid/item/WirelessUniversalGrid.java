@@ -18,7 +18,6 @@ import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.StackUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -41,10 +40,15 @@ public class WirelessUniversalGrid extends WirelessGrid {
     private final Level level;
     private Set<ICraftingGridListener> listeners = new HashSet<>();
 
-    private AbstractContainerMenu craftingContainer = new AbstractContainerMenu(null, 0) {
+    private AbstractContainerMenu craftingMenu = new AbstractContainerMenu(null, 0) {
         @Override
         public boolean stillValid(Player player) {
             return false;
+        }
+
+        @Override
+        public ItemStack quickMoveStack(Player player, int index) {
+            return ItemStack.EMPTY;
         }
 
         @Override
@@ -55,7 +59,7 @@ public class WirelessUniversalGrid extends WirelessGrid {
         }
     };
     private CraftingRecipe currentRecipe;
-    private CraftingContainer matrix = new CraftingContainer(craftingContainer, 3, 3);
+    private CraftingContainer matrix = new CraftingContainer(craftingMenu, 3, 3);
     private ResultContainer result = new ResultContainer();
 
     private final int gridType;
@@ -75,7 +79,7 @@ public class WirelessUniversalGrid extends WirelessGrid {
 
     @Override
     public Component getTitle() {
-        return new TranslatableComponent("gui.universalgrid.universal_grid");
+        return Component.translatable("gui.universalgrid.universal_grid");
     }
 
     @Override
