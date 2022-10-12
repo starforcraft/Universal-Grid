@@ -16,28 +16,24 @@ apply plugin: 'org.spongepowered.mixin'
 
 repositories {
     maven {
+        name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
         url = "https://maven.theillusivec4.top/"
     }
     maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
+        name 'RS maven'
         url = uri("https://maven.pkg.github.com/refinedmods/refinedstorage")
-        /* As of december 2021, GitHub packages requires authentication.
-           The password below is a personal access token that has read access to the Refined Mods repos.
-           It can be reused in other projects.
-           See: https://github.community/t/download-from-github-package-registry-without-authentication/14407/38 and
-                https://github.community/t/download-from-github-package-registry-without-authentication/14407/44
-         */
         credentials {
             username = "anything"
             password = "\u0067hp_oGjcDFCn8jeTzIj4Ke9pLoEVtpnZMP4VQgaX"
+        }
+    }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
         }
     }
 }
@@ -61,7 +57,6 @@ minecraft {
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            properties 'mixin.env.disableRefMap': 'true'
 
             mods {
                 universalgrid {
@@ -76,7 +71,6 @@ minecraft {
 	    
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            properties 'mixin.env.disableRefMap': 'true'
 
             mods {
                 universalgrid {
@@ -92,7 +86,6 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
             property 'forge.logging.console.level', 'debug'
-            properties 'mixin.env.disableRefMap': 'true'
 
             args '--mod', 'universalgrid', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
@@ -117,23 +110,19 @@ dependencies {
     }
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0:api")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
 jar {
     manifest {
         attributes([
             "Specification-Title": "universalgrid",
-            "Specification-Vendor": "universalgridsareus",
+            "Specification-Vendor": "universalgrid",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"universalgridsareus",
+            "Implementation-Vendor" :"universalgrid",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "MixinConfigs": "${modid}.mixins.json"
         ])
     }
 }
-
-jar.finalizedBy('reobfJar')
