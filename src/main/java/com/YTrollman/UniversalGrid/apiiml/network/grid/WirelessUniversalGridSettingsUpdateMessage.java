@@ -1,5 +1,6 @@
 package com.YTrollman.UniversalGrid.apiiml.network.grid;
 
+import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.container.GridContainerMenu;
@@ -13,19 +14,21 @@ import java.util.function.Supplier;
 
 public class WirelessUniversalGridSettingsUpdateMessage {
     private final int gridType;
+    private final int cursorX;
+    private final int cursorY;
 
-    public WirelessUniversalGridSettingsUpdateMessage(int gridType) {
+    public WirelessUniversalGridSettingsUpdateMessage(int gridType, int cursorX, int cursorY) {
         this.gridType = gridType;
+        this.cursorX = cursorX;
+        this.cursorY = cursorY;
     }
 
     public static WirelessUniversalGridSettingsUpdateMessage decode(FriendlyByteBuf buf) {
-        return new WirelessUniversalGridSettingsUpdateMessage(
-                buf.readInt()
-        );
+        return new WirelessUniversalGridSettingsUpdateMessage(buf.readInt(), buf.readInt(), buf.readInt());
     }
 
     public static void encode(WirelessUniversalGridSettingsUpdateMessage message, FriendlyByteBuf buf) {
-        buf.writeInt(message.gridType);
+        buf.writeInt(message.gridType).writeInt(message.cursorX).writeInt(message.cursorY);
     }
 
     public static void handle(WirelessUniversalGridSettingsUpdateMessage message, Supplier<NetworkEvent.Context> ctx) {
@@ -33,11 +36,11 @@ public class WirelessUniversalGridSettingsUpdateMessage {
 
         if (player != null) {
             ctx.get().enqueueWork(() -> {
-                if (player.containerMenu instanceof GridContainerMenu) {
-                    IGrid grid = ((GridContainerMenu) player.containerMenu).getGrid();
+                if (player.containerMenu instanceof GridContainerMenu gridContainer) {
+                    IGrid grid = gridContainer.getGrid();
 
-                    if (grid instanceof WirelessUniversalGrid) {
-                        ItemStack stack = ((WirelessUniversalGrid) grid).getStack();
+                    if (grid instanceof WirelessUniversalGrid universalGrid) {
+                        ItemStack stack = universalGrid.getStack();
 
                         if (!stack.hasTag()) {
                             stack.setTag(new CompoundTag());
@@ -49,10 +52,13 @@ public class WirelessUniversalGridSettingsUpdateMessage {
                         }
 
                         tag.putInt("gridType", message.gridType);
+                        tag.putInt("cursorX", message.cursorX);
+                        tag.putInt("cursorY", message.cursorY);
+                        tag.putBoolean("updateCursor", true);
                         stack.setTag(tag);
 
                         player.inventoryMenu.broadcastChanges();
-                        ((GridContainerMenu) player.containerMenu).initSlots();
+                        gridContainer.initSlots();
                         player.containerMenu.broadcastChanges();
 
                         player.closeContainer();

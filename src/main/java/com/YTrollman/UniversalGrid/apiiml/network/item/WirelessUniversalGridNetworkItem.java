@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class WirelessUniversalGridNetworkItem implements INetworkItem {
@@ -37,12 +37,11 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
 
     @Override
     public boolean onOpen(INetwork network) {
-        IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
+        IEnergyStorage energy = stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
 
         if (UniversalGridConfig.UNIVERSAL_GRID_USE_ENERGY.get() &&
                 ((WirelessUniversalGridItem) stack.getItem()).getType() != WirelessUniversalGridItem.Type.CREATIVE &&
-                energy != null &&
-                energy.getEnergyStored() <= UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get()) {
+                energy != null && energy.getEnergyStored() <= UniversalGridConfig.UNIVERSAL_GRID_OPEN_USAGE.get()) {
             sendOutOfEnergyMessage();
 
             return false;
@@ -64,7 +63,7 @@ public class WirelessUniversalGridNetworkItem implements INetworkItem {
     @Override
     public void drainEnergy(int energy) {
         if (UniversalGridConfig.UNIVERSAL_GRID_USE_ENERGY.get() && ((WirelessUniversalGridItem) stack.getItem()).getType() != WirelessUniversalGridItem.Type.CREATIVE) {
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> {
+            stack.getCapability(ForgeCapabilities.ENERGY).ifPresent(energyStorage -> {
                 energyStorage.extractEnergy(energy, false);
 
                 if (energyStorage.getEnergyStored() <= 0) {

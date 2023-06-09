@@ -1,6 +1,8 @@
 package com.YTrollman.UniversalGrid.item;
 
 import com.YTrollman.UniversalGrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridRemoveTagMessage;
+import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridSettingsUpdateMessage;
 import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.grid.GridType;
@@ -16,6 +18,7 @@ import com.refinedmods.refinedstorage.apiimpl.storage.cache.listener.FluidGridSt
 import com.refinedmods.refinedstorage.blockentity.grid.WirelessGrid;
 import com.refinedmods.refinedstorage.inventory.player.PlayerSlot;
 import com.refinedmods.refinedstorage.util.StackUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -29,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -74,6 +78,25 @@ public class WirelessUniversalGrid extends WirelessGrid {
 
         if (stack.hasTag()) {
             StackUtils.readItems(matrix, 1, stack.getTag());
+        }
+    }
+
+    public void setCursorPos(ItemStack stack) {
+        if(stack.hasTag()) {
+            if(stack.getTag().contains("updateCursor")) {
+                if(stack.getTag().getBoolean("updateCursor")) {
+                    UniversalGrid.NETWORK_HANDLER.sendToServer(new WirelessUniversalGridRemoveTagMessage());
+                } else {
+                    return;
+                }
+            }
+
+            if(stack.getTag().contains("cursorX") || stack.getTag().contains("cursorY")) {
+                int cursorX = stack.getTag().getInt("cursorX");
+                int cursorY = stack.getTag().getInt("cursorY");
+
+                GLFW.glfwSetCursorPos(Minecraft.getInstance().getWindow().getWindow(), cursorX, cursorY);
+            }
         }
     }
 

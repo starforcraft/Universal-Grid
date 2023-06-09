@@ -8,8 +8,13 @@ import com.refinedmods.refinedstorage.container.GridContainerMenu;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
 import com.refinedmods.refinedstorage.screen.KeyInputListener;
 import com.refinedmods.refinedstorage.screen.widget.sidebutton.SideButton;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.item.ItemStack;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+
+import java.nio.DoubleBuffer;
 
 public class UniversalGridSwitchGridTypeSideButton extends SideButton {
     private final int gridType;
@@ -29,7 +34,12 @@ public class UniversalGridSwitchGridTypeSideButton extends SideButton {
     }
 
     public void onPress() {
-        UniversalGrid.NETWORK_HANDLER.sendToServer(new WirelessUniversalGridSettingsUpdateMessage(gridType != 2 ? gridType + 1 : 0));
+        DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
+
+        GLFW.glfwGetCursorPos(Minecraft.getInstance().getWindow().getWindow(), x, y);
+
+        UniversalGrid.NETWORK_HANDLER.sendToServer(new WirelessUniversalGridSettingsUpdateMessage(gridType != 2 ? gridType + 1 : 0, (int) Math.round(x.get()), (int) Math.round(y.get())));
         KeyInputListener.findAndOpen(ModItems.WIRELESS_UNIVERSAL_GRID.get(), ModItems.CREATIVE_WIRELESS_UNIVERSAL_GRID.get());
     }
 }

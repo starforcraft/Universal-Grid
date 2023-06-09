@@ -27,8 +27,10 @@ public abstract class MixinGridScreen extends BaseScreen {
      */
     @Inject(at = @At("HEAD"), method = "onPostInit")
     public void onPostInit(int x, int y, CallbackInfo ci) {
-        if(getGrid() instanceof WirelessUniversalGrid) {
-            this.addSideButton(new UniversalGridSwitchGridTypeSideButton(this, ((WirelessUniversalGrid) getGrid()).getStack()));
+        if(getGrid() instanceof WirelessUniversalGrid wirelessUniversalGrid) {
+            this.addSideButton(new UniversalGridSwitchGridTypeSideButton(this, wirelessUniversalGrid.getStack()));
+
+            wirelessUniversalGrid.setCursorPos(wirelessUniversalGrid.getStack());
         }
     }
 }
