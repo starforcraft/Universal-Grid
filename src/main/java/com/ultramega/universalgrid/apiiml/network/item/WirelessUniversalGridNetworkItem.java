@@ -1,8 +1,8 @@
-package com.YTrollman.UniversalGrid.apiiml.network.item;
+package com.ultramega.universalgrid.apiiml.network.item;
 
-import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridGridFactory;
-import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
-import com.YTrollman.UniversalGrid.item.WirelessUniversalGridItem;
+import com.ultramega.universalgrid.apiiml.network.grid.WirelessUniversalGridGridFactory;
+import com.ultramega.universalgrid.config.UniversalGridConfig;
+import com.ultramega.universalgrid.item.WirelessUniversalGridItem;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;

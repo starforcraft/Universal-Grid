@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.YTrollman.UniversalGrid.mixin",
+  "package": "com.ultramega.universalgrid.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "universalgrid.refmap.json",
   "mixins": [

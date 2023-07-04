@@ -1,8 +1,8 @@
-package com.YTrollman.UniversalGrid.registry;
+package com.ultramega.universalgrid.registry;
 
-import com.YTrollman.UniversalGrid.UniversalGrid;
-import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridRemoveTagMessage;
-import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridSettingsUpdateMessage;
+import com.ultramega.universalgrid.UniversalGrid;
+import com.ultramega.universalgrid.apiiml.network.grid.WirelessUniversalGridRemoveTagMessage;
+import com.ultramega.universalgrid.apiiml.network.grid.WirelessUniversalGridSettingsUpdateMessage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;

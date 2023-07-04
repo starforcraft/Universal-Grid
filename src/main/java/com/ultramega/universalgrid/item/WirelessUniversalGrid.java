@@ -1,9 +1,8 @@
-package com.YTrollman.UniversalGrid.item;
+package com.ultramega.universalgrid.item;
 
-import com.YTrollman.UniversalGrid.UniversalGrid;
-import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridRemoveTagMessage;
-import com.YTrollman.UniversalGrid.apiiml.network.grid.WirelessUniversalGridSettingsUpdateMessage;
-import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
+import com.ultramega.universalgrid.UniversalGrid;
+import com.ultramega.universalgrid.apiiml.network.grid.WirelessUniversalGridRemoveTagMessage;
+import com.ultramega.universalgrid.config.UniversalGridConfig;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.grid.GridType;
 import com.refinedmods.refinedstorage.api.network.grid.ICraftingGridListener;
@@ -28,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -63,7 +63,7 @@ public class WirelessUniversalGrid extends WirelessGrid {
         }
     };
     private CraftingRecipe currentRecipe;
-    private CraftingContainer matrix = new CraftingContainer(craftingMenu, 3, 3);
+    private CraftingContainer matrix = new TransientCraftingContainer(craftingMenu, 3, 3);
     private ResultContainer result = new ResultContainer();
 
     private final int gridType;
@@ -178,7 +178,7 @@ public class WirelessUniversalGrid extends WirelessGrid {
         if (currentRecipe == null) {
             result.setItem(0, ItemStack.EMPTY);
         } else {
-            result.setItem(0, currentRecipe.assemble(matrix));
+            result.setItem(0, currentRecipe.assemble(matrix, level.registryAccess()));
         }
 
         listeners.forEach(ICraftingGridListener::onCraftingMatrixChanged);

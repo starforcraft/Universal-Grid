@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[47,)"
 license="MIT"
 issueTrackerURL="https://github.com/starforcraft/Universal-Grid/issues/new/choose"
 [[mods]]
@@ -15,20 +15,20 @@ description="This mod adds a Universal Grid."
 [[dependencies.universalgrid]]
     modId="refinedstorage"
     mandatory=true
-    versionRange="[1.11.0,)"
+    versionRange="[1.12,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.universalgrid]]
     modId="forge"
     mandatory=true
-    versionRange="[43.1.0,)"
+    versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.universalgrid]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2,)"
+    versionRange="[1.20.1,)"
     ordering="NONE"
     side="BOTH"

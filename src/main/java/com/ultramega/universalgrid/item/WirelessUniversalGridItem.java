@@ -1,8 +1,8 @@
-package com.YTrollman.UniversalGrid.item;
+package com.ultramega.universalgrid.item;
 
-import com.YTrollman.UniversalGrid.apiiml.network.item.WirelessUniversalGridNetworkItem;
-import com.YTrollman.UniversalGrid.config.UniversalGridConfig;
-import com.YTrollman.UniversalGrid.registry.ItemGroupUniversalGrid;
+import com.ultramega.universalgrid.apiiml.network.item.WirelessUniversalGridNetworkItem;
+import com.ultramega.universalgrid.config.UniversalGridConfig;
+import com.ultramega.universalgrid.registry.ModCreativeTabs;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItem;
 import com.refinedmods.refinedstorage.api.network.item.INetworkItemManager;
@@ -29,9 +29,7 @@ public class WirelessUniversalGridItem extends NetworkItem {
     private final Type type;
 
     public WirelessUniversalGridItem(Type type) {
-        super(new Item.Properties().tab(ItemGroupUniversalGrid.UNIVERSAL_GRID).stacksTo(1),
-                type == Type.CREATIVE, ()-> UniversalGridConfig.UNIVERSAL_GRID_CAPACITY.get());
-
+        super(new Item.Properties().stacksTo(1), type == Type.CREATIVE, ()-> UniversalGridConfig.UNIVERSAL_GRID_CAPACITY.get());
         this.type = type;
     }
 
