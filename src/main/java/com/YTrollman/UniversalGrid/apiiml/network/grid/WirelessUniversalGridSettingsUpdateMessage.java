@@ -1,6 +1,7 @@
-package com.ultramega.universalgrid.apiiml.network.grid;
+package com.YTrollman.UniversalGrid.apiiml.network.grid;
 
-import com.ultramega.universalgrid.item.WirelessUniversalGrid;
+import com.YTrollman.UniversalGrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.container.GridContainerMenu;
 import net.minecraft.nbt.CompoundTag;

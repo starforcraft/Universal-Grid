@@ -1,4 +1,4 @@
-package com.ultramega.universalgrid.config;
+package com.YTrollman.UniversalGrid.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

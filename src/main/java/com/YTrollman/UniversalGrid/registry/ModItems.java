@@ -1,10 +1,11 @@
-package com.ultramega.universalgrid.registry;
+package com.YTrollman.UniversalGrid.registry;
 
-import com.ultramega.universalgrid.UniversalGrid;
-import com.ultramega.universalgrid.item.WirelessUniversalGridItem;
+import com.YTrollman.UniversalGrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGridItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {

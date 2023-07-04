@@ -1,4 +1,4 @@
-package com.ultramega.universalgrid.registry;
+package com.YTrollman.UniversalGrid.registry;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;

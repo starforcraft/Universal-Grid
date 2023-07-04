@@ -1,7 +1,7 @@
-package com.ultramega.universalgrid.init;
+package com.YTrollman.UniversalGrid.init;
 
-import com.ultramega.universalgrid.registry.ModItems;
-import com.ultramega.universalgrid.registry.ModKeyBindings;
+import com.YTrollman.UniversalGrid.registry.ModItems;
+import com.YTrollman.UniversalGrid.registry.ModKeyBindings;
 import com.refinedmods.refinedstorage.item.property.NetworkItemPropertyGetter;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

@@ -1,7 +1,7 @@
-package com.ultramega.universalgrid.apiiml.network.grid;
+package com.YTrollman.UniversalGrid.apiiml.network.grid;
 
-import com.ultramega.universalgrid.UniversalGrid;
-import com.ultramega.universalgrid.item.WirelessUniversalGrid;
+import com.YTrollman.UniversalGrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.GridFactoryType;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGridFactory;
@@ -21,7 +21,7 @@ public class WirelessUniversalGridGridFactory implements IGridFactory {
     @Nullable
     @Override
     public IGrid createFromStack(Player player, ItemStack stack, PlayerSlot slot) {
-        return new WirelessUniversalGrid(stack, player.level(), player.getServer(), slot);
+        return new WirelessUniversalGrid(stack, player.getLevel(), player.getServer(), slot);
     }
 
     @Nullable

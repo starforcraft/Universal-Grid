@@ -1,7 +1,7 @@
-package com.ultramega.universalgrid.mixin;
+package com.YTrollman.UniversalGrid.mixin;
 
-import com.ultramega.universalgrid.gui.UniversalGridSwitchGridTypeSideButton;
-import com.ultramega.universalgrid.item.WirelessUniversalGrid;
+import com.YTrollman.UniversalGrid.gui.UniversalGridSwitchGridTypeSideButton;
+import com.YTrollman.UniversalGrid.item.WirelessUniversalGrid;
 import com.refinedmods.refinedstorage.api.network.grid.IGrid;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
 import com.refinedmods.refinedstorage.screen.grid.GridScreen;

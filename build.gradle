@@ -16,8 +16,8 @@ apply plugin: 'org.spongepowered.mixin'
 
 repositories {
     maven {
-        name = 'JEI'
-        url = "https://maven.blamejared.com/"
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
         url = "https://maven.theillusivec4.top/"
@@ -39,7 +39,7 @@ repositories {
 }
 
 version = "${mod_version}"
-group = "com.ultramega.universalgrid"
+group = "com.YTrollman.UniversalGrid"
 archivesBaseName = "${modid}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -103,14 +103,15 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:${jei_version}")
 
     implementation fg.deobf("com.refinedmods:refinedstorage:${rs_version}") {
         transitive false
     }
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.2.0-beta.3+${mc_version}")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0:api")
 
-    implementation fg.deobf('curse.maven:libx-412525:4606863')
+    implementation fg.deobf('curse.maven:libx-412525:4052778')
 }
 
 jar {

@@ -1,8 +1,8 @@
-package com.ultramega.universalgrid.config;
+package com.YTrollman.UniversalGrid.config;
 
 import java.io.File;
 
-import com.ultramega.universalgrid.UniversalGrid;
+import com.YTrollman.UniversalGrid.UniversalGrid;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 
