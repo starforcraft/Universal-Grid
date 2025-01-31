@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "universalgrid",
+  "version": "${version}",
+  "name": "Universal Grid",
+  "description": "Universal Grid is an addon for Refined Storage.",
+  "authors": [
+    "Ultramega"
+  ],
+  "contact": {
+    "sources": "https://github.com/starforcraft/Universal-Grid",
+    "issues": "https://github.com/starforcraft/Universal-Grid/issues"
+  },
+  "icon": "logo.png",
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ultramega.universalgrid.fabric.ModInitializerImpl"
+    ],
+    "client": [
+      "com.ultramega.universalgrid.fabric.ClientModInitializerImpl"
+    ],
+    "refinedstorage_plugin": [
+      "com.ultramega.universalgrid.fabric.ModInitializerImpl"
+    ],
+    "modmenu": [
+      "com.ultramega.universalgrid.fabric.ModMenuApiImpl"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/WpUmcmUayN"
+      },
+      "parent": "refinedstorage"
+    }
+  },
+  "mixins": [
+    "universalgrid.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric-api": "*",
+    "minecraft": "~1.21",
+    "refinedstorage": ">=2.0.0-milestone.4.10",
+    "refinedstorage_quartz_arsenal": ">=0.1.2",
+    "java": ">=21",
+    "cloth-config2": "*",
+    "team_reborn_energy": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

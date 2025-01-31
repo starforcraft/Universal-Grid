@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/starforcraft/Universal-Grid/issues"
+license = "MIT"
+[[mods]]
+modId = "universalgrid"
+version = "${version}" # TODO: investigate (file.jarVersion)?
+displayName = "Universal Grid"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/universal-grid"
+logoFile="logo.png"
+authors = "Ultramega"
+description = "Universal Grid is an addon for Refined Storage."
+
+[[mixins]]
+config="universalgrid.mixins.json"
+
+[[dependencies.universalgrid]]
+modId = "refinedstorage_quartz_arsenal"
+type = "required"
+versionRange = "0.1.2"
+side = "BOTH"
+
+[[dependencies.universalgrid]]
+modId = "refinedstorage"
+type = "required"
+versionRange = "2.0.0-milestone.4.10"
+side = "BOTH"
