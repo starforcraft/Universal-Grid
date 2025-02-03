@@ -1,0 +1,17 @@
+{
+  "mod.universalgrid": "Grille universelle",
+  "item.universalgrid.wireless_universal_grid": "Grille universelle sans fil",
+  "item.universalgrid.creative_wireless_universal_grid": "Grille universelle sans fil créative",
+  "key.universalgrid.open_wireless_universal_grid": "Ouvrir la Grille universelle sans fil",
+  "text.autoconfig.universalgrid.title": "Configuration de la Grille universelle",
+  "universalgrid.configuration.title": "Configuration de la Grille universelle",
+  "universalgrid.configuration.section.universalgrid.common.toml": "Configuration de la Grille universelle",
+  "universalgrid.configuration.section.universalgrid.common.toml.title": "Configuration de la Grille universelle",
+  "gui.universalgrid.grid.grid_type": "Type de Grille",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid": "Grille universelle sans fil",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.tooltip": "Configuration de la Grille universelle sans fil.",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity": "Capacité d'énergie",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity.tooltip": "La capacité d'énergie de la Grille universelle sans fil.",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType": "Type de Grille",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType.tooltip": "Le type de Grille de la Grille universelle sans fil."
+}
