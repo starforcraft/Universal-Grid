@@ -12,8 +12,11 @@ repositories {
     }
 }
 
+val modVersion: String by project
+
 refinedarchitect {
     modId = "universalgrid"
+    version = modVersion
     neoForge()
     publishing {
         maven = true
@@ -21,7 +24,7 @@ refinedarchitect {
 }
 
 base {
-    archivesName.set("neoforge")
+    archivesName.set("universalgrid-neoforge")
 }
 
 val refinedstorageVersion: String by project

@@ -1,18 +1,20 @@
 package com.ultramega.universalgrid.neoforge;
 
+import com.ultramega.universalgrid.common.AbstractModInitializer;
+import com.ultramega.universalgrid.common.ContentIds;
+import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
+import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
+import com.ultramega.universalgrid.common.registry.Items;
+import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
+
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.neoforge.support.energy.EnergyStorageAdapter;
-
-import com.ultramega.universalgrid.common.AbstractModInitializer;
-import com.ultramega.universalgrid.common.ContentIds;
-import com.ultramega.universalgrid.common.Platform;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoStackPacket;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoWindowPacket;
-import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
-import com.ultramega.universalgrid.common.registry.Items;
-import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
 
 import java.util.function.Supplier;
 
@@ -47,10 +49,8 @@ import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.MOD
 public class ModInitializer extends AbstractModInitializer {
     private final DeferredRegister<Item> itemRegistry =
         DeferredRegister.create(BuiltInRegistries.ITEM, MOD_ID);
-    private final DeferredRegister<DataComponentType<?>> dataComponentTypeRegistry = DeferredRegister.create(
-        BuiltInRegistries.DATA_COMPONENT_TYPE,
-        MOD_ID
-    );
+    private final DeferredRegister<DataComponentType<?>> dataComponentTypeRegistry =
+        DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, MOD_ID);
 
     public ModInitializer(final IEventBus eventBus, final ModContainer modContainer) {
         final ConfigImpl config = new ConfigImpl();
@@ -122,14 +122,25 @@ public class ModInitializer extends AbstractModInitializer {
     private void registerPackets(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(MOD_ID);
         registrar.playToServer(
-            SetCursorPacketOntoStackPacket.PACKET_TYPE,
-            SetCursorPacketOntoStackPacket.STREAM_CODEC,
-            wrapHandler(SetCursorPacketOntoStackPacket::handle)
+            SetCursorPosStackPacket.PACKET_TYPE,
+            SetCursorPosStackPacket.STREAM_CODEC,
+            wrapHandler(SetCursorPosStackPacket::handle)
+        );
+        registrar.playToServer(
+            UpdateDisabledSlotPacket.PACKET_TYPE,
+            UpdateDisabledSlotPacket.STREAM_CODEC,
+            wrapHandler(UpdateDisabledSlotPacket::handle)
+        );
+
+        registrar.playToClient(
+            SetCursorPosWindowPacket.PACKET_TYPE,
+            SetCursorPosWindowPacket.STREAM_CODEC,
+            wrapHandler(SetCursorPosWindowPacket::handle)
         );
         registrar.playToClient(
-            SetCursorPacketOntoWindowPacket.PACKET_TYPE,
-            SetCursorPacketOntoWindowPacket.STREAM_CODEC,
-            wrapHandler(SetCursorPacketOntoWindowPacket::handle)
+            SetDisabledSlotPacket.PACKET_TYPE,
+            SetDisabledSlotPacket.STREAM_CODEC,
+            wrapHandler(SetDisabledSlotPacket::handle)
         );
     }
 

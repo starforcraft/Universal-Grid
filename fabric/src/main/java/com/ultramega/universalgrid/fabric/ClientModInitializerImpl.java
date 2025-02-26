@@ -1,13 +1,14 @@
 package com.ultramega.universalgrid.fabric;
 
-import com.refinedmods.refinedstorage.common.support.network.item.NetworkItemPropertyFunction;
-import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
-
 import com.ultramega.universalgrid.common.AbstractClientModInitializer;
 import com.ultramega.universalgrid.common.ContentNames;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoWindowPacket;
+import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
+
+import com.refinedmods.refinedstorage.common.support.network.item.NetworkItemPropertyFunction;
+import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
@@ -51,8 +52,12 @@ public class ClientModInitializerImpl extends AbstractClientModInitializer imple
 
     private void registerPacketHandlers() {
         ClientPlayNetworking.registerGlobalReceiver(
-            SetCursorPacketOntoWindowPacket.PACKET_TYPE,
-            wrapHandler(SetCursorPacketOntoWindowPacket::handle)
+            SetCursorPosWindowPacket.PACKET_TYPE,
+            wrapHandler(SetCursorPosWindowPacket::handle)
+        );
+        ClientPlayNetworking.registerGlobalReceiver(
+            SetDisabledSlotPacket.PACKET_TYPE,
+            wrapHandler(SetDisabledSlotPacket::handle)
         );
     }
 

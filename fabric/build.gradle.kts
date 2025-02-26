@@ -20,8 +20,11 @@ repositories {
     }
 }
 
+val modVersion: String by project
+
 refinedarchitect {
     modId = "universalgrid"
+    version = modVersion
     fabric()
     publishing {
         maven = true
@@ -29,7 +32,7 @@ refinedarchitect {
 }
 
 base {
-    archivesName.set("fabric")
+    archivesName.set("universalgrid-fabric")
 }
 
 val refinedstorageVersion: String by project

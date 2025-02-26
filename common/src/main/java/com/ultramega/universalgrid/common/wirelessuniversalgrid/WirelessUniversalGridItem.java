@@ -1,5 +1,10 @@
 package com.ultramega.universalgrid.common.wirelessuniversalgrid;
 
+import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.gui.view.GridTypes;
+import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.registry.DataComponents;
+
 import com.refinedmods.refinedstorage.api.network.energy.EnergyStorage;
 import com.refinedmods.refinedstorage.api.network.impl.energy.EnergyStorageImpl;
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
@@ -9,11 +14,6 @@ import com.refinedmods.refinedstorage.common.api.support.network.item.NetworkIte
 import com.refinedmods.refinedstorage.common.api.support.network.item.NetworkItemHelper;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.content.Items;
-
-import com.ultramega.universalgrid.common.Platform;
-import com.ultramega.universalgrid.common.gui.view.GridTypes;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoWindowPacket;
-import com.ultramega.universalgrid.common.registry.DataComponents;
 
 import javax.annotation.Nullable;
 
@@ -64,14 +64,11 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
     }
 
     @Override
-    protected void use(@Nullable final Component name,
-                       final ServerPlayer player,
-                       final SlotReference slotReference,
-                       final NetworkItemContext context) {
+    protected void use(@Nullable final Component name, final ServerPlayer player, final SlotReference slotReference, final NetworkItemContext context) {
     }
 
-    private void openCorrectGrid(ServerPlayer serverPlayer, ItemStack stack, SlotReference slotReference) {
-        GridTypes gridType = Platform.getConfig().getWirelessUniversalGrid().getGridType();
+    private void openCorrectGrid(final ServerPlayer serverPlayer, final ItemStack stack, final SlotReference slotReference) {
+        final GridTypes gridType = Platform.getConfig().getWirelessUniversalGrid().getGridType();
         switch (gridType) {
             case WIRELESS_GRID ->
                 Items.INSTANCE.getWirelessGrid().use(serverPlayer, stack, slotReference);
@@ -83,13 +80,15 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
 
         // Read and apply cursor position
         final WirelessUniversalGridState state = stack.get(DataComponents.INSTANCE.getWirelessUniversalGridState());
-        if (state == null)
+        if (state == null) {
             return;
-        if (!state.applyCursorPos())
+        }
+        if (!state.applyCursorPos()) {
             return;
+        }
 
         com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToClient(serverPlayer,
-            new SetCursorPacketOntoWindowPacket(state.cursorX(), state.cursorY()));
+            new SetCursorPosWindowPacket(state.cursorX(), state.cursorY()));
 
         Platform.setWirelessUniversalGridState(stack, state.cursorX(), state.cursorY(), false);
     }

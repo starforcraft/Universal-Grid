@@ -1,9 +1,9 @@
 package com.ultramega.universalgrid.common;
 
-import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
-
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
+
+import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

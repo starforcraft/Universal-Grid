@@ -7,4 +7,6 @@ import javax.annotation.Nullable;
 public interface MixinDisabledSlot {
     @Nullable
     SlotReference universalgrid$getDisabledSlot();
+
+    void universalgrid$setDisabledSlot(SlotReference disabledSlot);
 }

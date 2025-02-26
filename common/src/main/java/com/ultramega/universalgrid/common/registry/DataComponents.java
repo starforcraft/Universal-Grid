@@ -22,9 +22,7 @@ public final class DataComponents {
         return requireNonNull(wirelessUniversalGridState).get();
     }
 
-    public void setWirelessUniversalGridState(
-        @Nullable final Supplier<DataComponentType<WirelessUniversalGridState>> supplier
-    ) {
+    public void setWirelessUniversalGridState(@Nullable final Supplier<DataComponentType<WirelessUniversalGridState>> supplier) {
         this.wirelessUniversalGridState = supplier;
     }
 }

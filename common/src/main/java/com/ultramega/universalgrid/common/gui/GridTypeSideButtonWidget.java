@@ -1,16 +1,17 @@
 package com.ultramega.universalgrid.common.gui;
 
+import com.ultramega.universalgrid.common.gui.view.GridTypes;
+import com.ultramega.universalgrid.common.interfaces.MixinGridType;
+
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 import com.refinedmods.refinedstorage.common.support.widget.AbstractSideButtonWidget;
 import com.refinedmods.refinedstorage.common.util.IdentifierUtil;
 import com.refinedmods.refinedstorage.quartzarsenal.common.QuartzArsenalIdentifierUtil;
 
-import com.ultramega.universalgrid.common.gui.view.GridTypes;
-import com.ultramega.universalgrid.common.interfaces.MixinGridType;
-
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -40,7 +41,8 @@ public class GridTypeSideButtonWidget extends AbstractSideButtonWidget {
     }
 
     private static OnPress createPressAction(final AbstractBaseContainerMenu menu) {
-        return btn -> ((MixinGridType) menu).universalgrid$setGridType(toggle(((MixinGridType) menu).universalgrid$getGridType()));
+        return btn -> ((MixinGridType) menu).universalgrid$setGridType(toggle(((MixinGridType) menu).universalgrid$getGridType()),
+            Minecraft.getInstance().player);
     }
 
     private static GridTypes toggle(final GridTypes gridType) {

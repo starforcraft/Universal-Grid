@@ -1,11 +1,11 @@
 package com.ultramega.universalgrid.neoforge;
 
-import com.refinedmods.refinedstorage.common.support.network.item.NetworkItemPropertyFunction;
-
 import com.ultramega.universalgrid.common.AbstractClientModInitializer;
 import com.ultramega.universalgrid.common.ContentNames;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
+
+import com.refinedmods.refinedstorage.common.support.network.item.NetworkItemPropertyFunction;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;

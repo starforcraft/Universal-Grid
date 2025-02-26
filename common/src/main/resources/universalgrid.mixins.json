@@ -8,6 +8,10 @@
     "MixinAutocraftingMonitorScreen"
   ],
   "mixins": [
-    "MixinAbstractBaseContainerMenu"
+    "MixinAbstractAutocraftingMonitorContainerMenu",
+    "MixinAbstractBaseContainerMenu",
+    "MixinWirelessAutocraftingMonitorContainerMenu",
+    "MixinWirelessAutocraftingMonitorExtendedMenuProvider",
+    "MixinWirelessAutocraftingMonitorItem"
   ]
 }

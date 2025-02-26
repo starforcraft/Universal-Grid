@@ -4,7 +4,7 @@ issueTrackerURL = "https://github.com/starforcraft/Universal-Grid/issues"
 license = "MIT"
 [[mods]]
 modId = "universalgrid"
-version = "${version}" # TODO: investigate (file.jarVersion)?
+version = "${version}"
 displayName = "Universal Grid"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/universal-grid"
 logoFile="logo.png"

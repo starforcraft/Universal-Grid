@@ -1,13 +1,14 @@
 package com.ultramega.universalgrid.common.mixin;
 
-import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
+import com.ultramega.universalgrid.common.ClientUtils;
+import com.ultramega.universalgrid.common.gui.GridTypeSideButtonWidget;
+import com.ultramega.universalgrid.common.interfaces.MixinSideButton;
+import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+
+import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AutocraftingMonitorScreen;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseScreen;
-
-import com.ultramega.universalgrid.common.gui.GridTypeSideButtonWidget;
-import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
-import com.ultramega.universalgrid.common.registry.Items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AutocraftingMonitorScreen.class)
-public abstract class MixinAutocraftingMonitorScreen extends AbstractBaseScreen {
+public abstract class MixinAutocraftingMonitorScreen extends AbstractBaseScreen implements MixinSideButton {
     public MixinAutocraftingMonitorScreen(final AbstractContainerMenu menu,
                                           final Inventory playerInventory,
                                           final Component title) {
@@ -27,14 +28,16 @@ public abstract class MixinAutocraftingMonitorScreen extends AbstractBaseScreen 
 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(final CallbackInfo ci) {
-        // TODO: this doesn't work right now because disabledSlot isn't passed to the autocrafting monitor container menu
-        SlotReference gridSlot = ((MixinDisabledSlot)getMenu()).universalgrid$getDisabledSlot();
-        if (gridSlot != null) {
-            gridSlot.resolve(minecraft.player).ifPresent(stack -> {
-                if (stack.is(Items.INSTANCE.getWirelessUniversalGrid()) || stack.is(Items.INSTANCE.getCreativeWirelessUniversalGrid())) {
-                    this.addSideButton(new GridTypeSideButtonWidget((AbstractBaseContainerMenu) this.getMenu()));
-                }
-            });
+        Platform.INSTANCE.sendPacketToServer(new UpdateDisabledSlotPacket());
+
+        universalgrid$checkForSideButton();
+    }
+
+    @Override
+    public void universalgrid$checkForSideButton() {
+        final AbstractBaseContainerMenu containerMenu = (AbstractBaseContainerMenu) this.getMenu();
+        if (ClientUtils.checkForSideButton(containerMenu, minecraft.player)) {
+            this.addSideButton(new GridTypeSideButtonWidget(containerMenu));
         }
     }
 }

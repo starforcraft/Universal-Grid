@@ -25,7 +25,7 @@ public final class Platform {
         return requireNonNull(configProvider, "Config isn't loaded yet").get();
     }
 
-    public static void setWirelessUniversalGridState(ItemStack stack, int cursorX, int cursorY, boolean applyCursorPos) {
+    public static void setWirelessUniversalGridState(final ItemStack stack, final int cursorX, final int cursorY, final boolean applyCursorPos) {
         stack.set(
             DataComponents.INSTANCE.getWirelessUniversalGridState(),
             new WirelessUniversalGridState(cursorX, cursorY, applyCursorPos)

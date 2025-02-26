@@ -1,9 +1,9 @@
 package com.ultramega.universalgrid.common;
 
-import com.refinedmods.refinedstorage.common.content.RegistryCallback;
-
 import com.ultramega.universalgrid.common.registry.DataComponents;
 import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridState;
+
+import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;

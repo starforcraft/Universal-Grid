@@ -1,20 +1,22 @@
 package com.ultramega.universalgrid.fabric;
 
+import com.ultramega.universalgrid.common.AbstractModInitializer;
+import com.ultramega.universalgrid.common.ContentIds;
+import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
+import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
+import com.ultramega.universalgrid.common.registry.Items;
+import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
+
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.content.DirectRegistryCallback;
 import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.fabric.api.RefinedStoragePlugin;
 import com.refinedmods.refinedstorage.fabric.support.energy.EnergyStorageAdapter;
-
-import com.ultramega.universalgrid.common.AbstractModInitializer;
-import com.ultramega.universalgrid.common.ContentIds;
-import com.ultramega.universalgrid.common.Platform;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoStackPacket;
-import com.ultramega.universalgrid.common.packet.SetCursorPacketOntoWindowPacket;
-import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
-import com.ultramega.universalgrid.common.registry.Items;
-import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
@@ -89,14 +91,20 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     }
 
     private void registerPackets() {
-        PayloadTypeRegistry.playS2C().register(SetCursorPacketOntoWindowPacket.PACKET_TYPE, SetCursorPacketOntoWindowPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(SetCursorPacketOntoStackPacket.PACKET_TYPE, SetCursorPacketOntoStackPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(SetCursorPosStackPacket.PACKET_TYPE, SetCursorPosStackPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(UpdateDisabledSlotPacket.PACKET_TYPE, UpdateDisabledSlotPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(SetCursorPosWindowPacket.PACKET_TYPE, SetCursorPosWindowPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(SetDisabledSlotPacket.PACKET_TYPE, SetDisabledSlotPacket.STREAM_CODEC);
     }
 
     private void registerPacketHandlers() {
         ServerPlayNetworking.registerGlobalReceiver(
-            SetCursorPacketOntoStackPacket.PACKET_TYPE,
-            wrapHandler(SetCursorPacketOntoStackPacket::handle)
+            SetCursorPosStackPacket.PACKET_TYPE,
+            wrapHandler(SetCursorPosStackPacket::handle)
+        );
+        ServerPlayNetworking.registerGlobalReceiver(
+            UpdateDisabledSlotPacket.PACKET_TYPE,
+            wrapHandler(UpdateDisabledSlotPacket::handle)
         );
     }
 
