@@ -30,7 +30,7 @@ public record SetDisabledSlotPacket(SlotReference disabledSlot) implements Custo
             ((MixinDisabledSlot) containerMenu).universalgrid$setDisabledSlot(packet.disabledSlot());
 
             if (Minecraft.getInstance().screen instanceof AutocraftingMonitorScreen screen) {
-                ((MixinSideButton) screen).universalgrid$checkForSideButton();
+                ((MixinSideButton) screen).universalgrid$checkSideButton();
             }
         }
     }

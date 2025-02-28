@@ -36,8 +36,8 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
     }
 
     @Override
-    public void universalgrid$setDisabledSlot(final SlotReference disabledSlot) {
-        this.disabledSlot = disabledSlot;
+    public void universalgrid$setDisabledSlot(final SlotReference slotReference) {
+        this.disabledSlot = slotReference;
     }
 
     @Unique

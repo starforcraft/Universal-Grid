@@ -29,12 +29,10 @@ public abstract class MixinAutocraftingMonitorScreen extends AbstractBaseScreen 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(final CallbackInfo ci) {
         Platform.INSTANCE.sendPacketToServer(new UpdateDisabledSlotPacket());
-
-        universalgrid$checkForSideButton();
     }
 
     @Override
-    public void universalgrid$checkForSideButton() {
+    public void universalgrid$checkSideButton() {
         final AbstractBaseContainerMenu containerMenu = (AbstractBaseContainerMenu) this.getMenu();
         if (ClientUtils.isUniversalGrid(containerMenu, minecraft.player)) {
             this.addSideButton(new GridTypeSideButtonWidget(containerMenu));
