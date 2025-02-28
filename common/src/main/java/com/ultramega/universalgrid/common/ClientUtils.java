@@ -1,5 +1,6 @@
 package com.ultramega.universalgrid.common;
 
+import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
 import com.ultramega.universalgrid.common.registry.Items;
@@ -19,7 +20,7 @@ public class ClientUtils {
     private ClientUtils() {
     }
 
-    public static void updateCursorPos(final SlotReference gridSlot) {
+    public static void updateCursorPos(final SlotReference gridSlot, final GridTypes gridType) {
         final DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
         final DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
 
@@ -29,10 +30,11 @@ public class ClientUtils {
             gridSlot,
             (int) Math.round(x.get()),
             (int) Math.round(y.get()),
-            true));
+            true,
+            gridType));
     }
 
-    public static boolean checkForSideButton(final AbstractBaseContainerMenu menu, @Nullable final Player player) {
+    public static boolean isUniversalGrid(final AbstractBaseContainerMenu menu, @Nullable final Player player) {
         final SlotReference gridSlot = ((MixinDisabledSlot) menu).universalgrid$getDisabledSlot();
         if (gridSlot != null && player != null) {
             return gridSlot.resolve(player)

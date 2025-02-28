@@ -5,11 +5,10 @@ import com.ultramega.universalgrid.common.Platform;
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.interfaces.MixinGridType;
-import com.ultramega.universalgrid.common.registry.Items;
 
-import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
+import com.refinedmods.refinedstorage.common.support.packet.c2s.C2SPackets;
 
 import javax.annotation.Nullable;
 
@@ -53,18 +52,11 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
         Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
 
         // Save cursor position
-        final SlotReference gridSlot = this.universalgrid$getDisabledSlot();
-        if (player != null && gridSlot != null) {
-            if (player.level().isClientSide()) {
-                ClientUtils.updateCursorPos(gridSlot);
-            }
+        if (player != null && player.level().isClientSide() && this.disabledSlot != null) {
+            ClientUtils.updateCursorPos(this.disabledSlot, gridType);
 
-            // Re-open screen with new grid type (the old screen/container will automatically be closed)
-            RefinedStorageApi.INSTANCE.useSlotReferencedItem(
-                player,
-                Items.INSTANCE.getWirelessUniversalGrid(),
-                Items.INSTANCE.getCreativeWirelessUniversalGrid()
-            );
+            // Re-open screen with new grid type (the old screen/container menu will automatically be closed)
+            C2SPackets.sendUseSlotReferencedItem(this.disabledSlot);
         }
     }
 }

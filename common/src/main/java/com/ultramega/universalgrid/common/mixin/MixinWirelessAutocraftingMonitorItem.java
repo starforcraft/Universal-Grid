@@ -30,7 +30,8 @@ public class MixinWirelessAutocraftingMonitorItem {
         this.universalgrid$disabledSlot = slotReference;
     }
 
-    @ModifyArg(method = "use", at = @At(value = "INVOKE", target = "Lcom/refinedmods/refinedstorage/common/support/containermenu/MenuOpener;openMenu(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/MenuProvider;)V"))
+    @ModifyArg(method = "use", at = @At(value = "INVOKE", target =
+        "Lcom/refinedmods/refinedstorage/common/support/containermenu/MenuOpener;openMenu(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/MenuProvider;)V"))
     private MenuProvider addDisabledSlotReference(final MenuProvider provider) {
         if (provider instanceof MixinDisabledSlot extendedMenuProvider) {
             extendedMenuProvider.universalgrid$setDisabledSlot(universalgrid$disabledSlot);

@@ -1,0 +1,17 @@
+{
+  "mod.universalgrid": "Universal Grid",
+  "item.universalgrid.wireless_universal_grid": "Беспроводной универсальный терминал",
+  "item.universalgrid.creative_wireless_universal_grid": "Творческий беспроводной универсальный терминал",
+  "key.universalgrid.open_wireless_universal_grid": "Открыть беспроводной универсальный терминал",
+  "text.autoconfig.universalgrid.title": "Конфигурация Universal Grid",
+  "universalgrid.configuration.title": "Конфигурация Universal Grid",
+  "universalgrid.configuration.section.universalgrid.common.toml": "Конфигурация Universal Grid",
+  "universalgrid.configuration.section.universalgrid.common.toml.title": "Конфигурация Universal Grid",
+  "gui.universalgrid.grid.grid_type": "Тип терминала",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid": "Беспроводной универсальный терминал",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.tooltip": "Конфигурация для беспроводного универсального терминала.",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity": "Объём энергии",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity.tooltip": "Объём энергии беспроводного универсального терминала.",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType": "Тип терминала",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType.tooltip": "Выбранный тип терминала беспроводного универсального терминала."
+}

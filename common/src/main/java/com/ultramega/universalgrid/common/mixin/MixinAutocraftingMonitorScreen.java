@@ -36,7 +36,7 @@ public abstract class MixinAutocraftingMonitorScreen extends AbstractBaseScreen 
     @Override
     public void universalgrid$checkForSideButton() {
         final AbstractBaseContainerMenu containerMenu = (AbstractBaseContainerMenu) this.getMenu();
-        if (ClientUtils.checkForSideButton(containerMenu, minecraft.player)) {
+        if (ClientUtils.isUniversalGrid(containerMenu, minecraft.player)) {
             this.addSideButton(new GridTypeSideButtonWidget(containerMenu));
         }
     }
