@@ -23,5 +23,5 @@ side = "BOTH"
 [[dependencies.universalgrid]]
 modId = "refinedstorage"
 type = "required"
-versionRange = "2.0.0-milestone.4.10"
+versionRange = "2.0.0-milestone.4.14"
 side = "BOTH"
