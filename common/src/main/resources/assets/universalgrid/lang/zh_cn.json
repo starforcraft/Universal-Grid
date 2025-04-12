@@ -1,0 +1,17 @@
+{
+  "mod.universalgrid": "通用终端",
+  "item.universalgrid.wireless_universal_grid": "无线通用终端",
+  "item.universalgrid.creative_wireless_universal_grid": "创造无线通用终端",
+  "key.universalgrid.open_wireless_universal_grid": "打开无线通用终端",
+  "text.autoconfig.universalgrid.title": "通用终端配置",
+  "universalgrid.configuration.title": "通用终端配置",
+  "universalgrid.configuration.section.universalgrid.common.toml": "通用终端配置",
+  "universalgrid.configuration.section.universalgrid.common.toml.title": "通用终端配置",
+  "gui.universalgrid.grid.grid_type": "终端类型",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid": "无线通用终端",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.tooltip": "无线通用终端配置。",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity": "能量容量",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.energyCapacity.tooltip": "无线通用终端的能量容量。",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType": "终端种类",
+  "text.autoconfig.universalgrid.option.wirelessUniversalGrid.gridType.tooltip": "选择的无线通用终端种类。"
+}
