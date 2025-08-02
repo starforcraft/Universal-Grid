@@ -3,6 +3,7 @@
   "item.universalgrid.wireless_universal_grid": "Беспроводной универсальный терминал",
   "item.universalgrid.creative_wireless_universal_grid": "Творческий беспроводной универсальный терминал",
   "key.universalgrid.open_wireless_universal_grid": "Открыть беспроводной универсальный терминал",
+  "key.universalgrid.switch_wireless_universal_grid_type": "Switch Wireless Universal Grid Type",
   "text.autoconfig.universalgrid.title": "Конфигурация Universal Grid",
   "universalgrid.configuration.title": "Конфигурация Universal Grid",
   "universalgrid.configuration.section.universalgrid.common.toml": "Конфигурация Universal Grid",

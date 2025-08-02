@@ -61,21 +61,21 @@ public class ModInitializer extends AbstractModInitializer {
             eventBus.addListener(ClientModInitializer::onRegisterKeyMappings);
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
-        registerContent(eventBus);
+        this.registerContent(eventBus);
         eventBus.addListener(this::registerCapabilities);
         eventBus.addListener(this::registerPackets);
         eventBus.addListener(this::registerCreativeModeTabListener);
     }
 
     private void registerContent(final IEventBus eventBus) {
-        registerItems(eventBus);
-        registerDataComponents(eventBus);
+        this.registerItems(eventBus);
+        this.registerDataComponents(eventBus);
     }
 
     private void registerItems(final IEventBus eventBus) {
-        final RegistryCallback<Item> callback = new ForgeRegistryCallback<>(itemRegistry);
-        registerCustomItems(callback);
-        itemRegistry.register(eventBus);
+        final RegistryCallback<Item> callback = new ForgeRegistryCallback<>(this.itemRegistry);
+        this.registerCustomItems(callback);
+        this.itemRegistry.register(eventBus);
     }
 
     private void registerCustomItems(final RegistryCallback<Item> callback) {
@@ -110,13 +110,13 @@ public class ModInitializer extends AbstractModInitializer {
     }
 
     private void registerDataComponents(final IEventBus eventBus) {
-        final RegistryCallback<DataComponentType<?>> callback = new ForgeRegistryCallback<>(dataComponentTypeRegistry);
-        registerDataComponents(callback);
-        dataComponentTypeRegistry.register(eventBus);
+        final RegistryCallback<DataComponentType<?>> callback = new ForgeRegistryCallback<>(this.dataComponentTypeRegistry);
+        this.registerDataComponents(callback);
+        this.dataComponentTypeRegistry.register(eventBus);
     }
 
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        registerEnergyItemProviders(event);
+        this.registerEnergyItemProviders(event);
     }
 
     private void registerPackets(final RegisterPayloadHandlersEvent event) {
@@ -172,7 +172,7 @@ public class ModInitializer extends AbstractModInitializer {
     private record ForgeRegistryCallback<T>(DeferredRegister<T> registry) implements RegistryCallback<T> {
         @Override
         public <R extends T> Supplier<R> register(final ResourceLocation id, final Supplier<R> value) {
-            return registry.register(id.getPath(), value);
+            return this.registry.register(id.getPath(), value);
         }
     }
 }

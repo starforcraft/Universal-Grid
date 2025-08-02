@@ -1,15 +1,12 @@
 package com.ultramega.universalgrid.common.packet;
 
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
-import com.ultramega.universalgrid.common.interfaces.MixinSideButton;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReferenceFactory;
-import com.refinedmods.refinedstorage.common.autocrafting.monitor.AutocraftingMonitorScreen;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 import com.refinedmods.refinedstorage.common.support.packet.PacketContext;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -28,10 +25,6 @@ public record SetDisabledSlotPacket(SlotReference disabledSlot) implements Custo
         final AbstractContainerMenu container = ctx.getPlayer().containerMenu;
         if (container instanceof AbstractBaseContainerMenu containerMenu) {
             ((MixinDisabledSlot) containerMenu).universalgrid$setDisabledSlot(packet.disabledSlot());
-
-            if (Minecraft.getInstance().screen instanceof AutocraftingMonitorScreen screen) {
-                ((MixinSideButton) screen).universalgrid$checkSideButton();
-            }
         }
     }
 

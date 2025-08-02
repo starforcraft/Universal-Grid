@@ -3,6 +3,7 @@
   "item.universalgrid.wireless_universal_grid": "无线通用终端",
   "item.universalgrid.creative_wireless_universal_grid": "创造无线通用终端",
   "key.universalgrid.open_wireless_universal_grid": "打开无线通用终端",
+  "key.universalgrid.switch_wireless_universal_grid_type": "Switch Wireless Universal Grid Type",
   "text.autoconfig.universalgrid.title": "通用终端配置",
   "universalgrid.configuration.title": "通用终端配置",
   "universalgrid.configuration.section.universalgrid.common.toml": "通用终端配置",

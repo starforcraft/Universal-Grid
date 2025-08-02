@@ -53,14 +53,14 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
         if (player instanceof ServerPlayer serverPlayer && level.getServer() != null) {
             final SlotReference slotReference = RefinedStorageApi.INSTANCE.createInventorySlotReference(serverPlayer, hand);
             slotReference.resolve(serverPlayer).ifPresent(s ->
-                openCorrectGrid(serverPlayer, s, slotReference));
+                this.openCorrectGrid(serverPlayer, s, slotReference));
         }
         return InteractionResultHolder.consume(stack);
     }
 
     @Override
     public void use(final ServerPlayer player, final ItemStack stack, final SlotReference slotReference) {
-        openCorrectGrid(player, stack, slotReference);
+        this.openCorrectGrid(player, stack, slotReference);
     }
 
     @Override

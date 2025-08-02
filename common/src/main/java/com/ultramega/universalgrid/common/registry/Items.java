@@ -19,7 +19,7 @@ public final class Items {
     }
 
     public WirelessUniversalGridItem getWirelessUniversalGrid() {
-        return requireNonNull(wirelessUniversalGrid).get();
+        return requireNonNull(this.wirelessUniversalGrid).get();
     }
 
     public void setWirelessUniversalGrid(final Supplier<WirelessUniversalGridItem> supplier) {
@@ -27,7 +27,7 @@ public final class Items {
     }
 
     public WirelessUniversalGridItem getCreativeWirelessUniversalGrid() {
-        return requireNonNull(creativeWirelessUniversalGrid).get();
+        return requireNonNull(this.creativeWirelessUniversalGrid).get();
     }
 
     public void setCreativeWirelessUniversalGrid(final Supplier<WirelessUniversalGridItem> supplier) {

@@ -21,7 +21,7 @@ public class ConfigImpl implements ConfigData, Config {
 
     @Override
     public WirelessUniversalGridEntry getWirelessUniversalGrid() {
-        return wirelessUniversalGrid;
+        return this.wirelessUniversalGrid;
     }
 
     private static class WirelessUniversalGridEntryEntryImpl implements WirelessUniversalGridEntry {
@@ -30,12 +30,12 @@ public class ConfigImpl implements ConfigData, Config {
 
         @Override
         public long getEnergyCapacity() {
-            return energyCapacity;
+            return this.energyCapacity;
         }
 
         @Override
         public GridTypes getGridType() {
-            return gridType;
+            return this.gridType;
         }
 
         @Override

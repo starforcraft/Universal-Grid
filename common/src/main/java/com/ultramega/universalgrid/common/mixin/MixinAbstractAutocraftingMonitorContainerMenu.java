@@ -17,6 +17,6 @@ public class MixinAbstractAutocraftingMonitorContainerMenu implements MixinPlaye
 
     @Override
     public Player universalgrid$getPlayer() {
-        return player;
+        return this.player;
     }
 }

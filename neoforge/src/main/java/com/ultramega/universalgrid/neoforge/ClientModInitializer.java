@@ -45,6 +45,15 @@ public class ClientModInitializer extends AbstractClientModInitializer {
         );
         e.register(openWirelessUniversalGrid);
         KeyMappings.INSTANCE.setOpenWirelessUniversalGrid(openWirelessUniversalGrid);
+
+        final KeyMapping switchWirelessUniversalGridType = new KeyMapping(
+            ContentNames.SWITCH_WIRELESS_UNIVERSAL_GRID_TYPE_TRANSLATION_KEY,
+            KeyConflictContext.GUI,
+            InputConstants.UNKNOWN,
+            ContentNames.MOD_TRANSLATION_KEY
+        );
+        e.register(switchWirelessUniversalGridType);
+        KeyMappings.INSTANCE.setSwitchWirelessUniversalGridType(switchWirelessUniversalGridType);
     }
 
     private static void registerItemProperties() {

@@ -40,9 +40,9 @@ public abstract class MixinWirelessAutocraftingMonitorContainerMenu extends Abst
     @Override
     public void universalgrid$sendUpdate() {
         final Player player = ((MixinPlayer) this).universalgrid$getPlayer();
-        if (player instanceof ServerPlayer serverPlayer && disabledSlot != null) {
+        if (player instanceof ServerPlayer serverPlayer && this.disabledSlot != null) {
             com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToClient(serverPlayer,
-                new SetDisabledSlotPacket(disabledSlot));
+                new SetDisabledSlotPacket(this.disabledSlot));
         }
     }
 }

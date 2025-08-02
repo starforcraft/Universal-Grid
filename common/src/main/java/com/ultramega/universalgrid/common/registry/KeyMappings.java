@@ -9,6 +9,8 @@ public final class KeyMappings {
 
     @Nullable
     private KeyMapping openWirelessUniversalGrid;
+    @Nullable
+    private KeyMapping switchWirelessUniversalGridType;
 
     private KeyMappings() {
     }
@@ -19,6 +21,15 @@ public final class KeyMappings {
 
     @Nullable
     public KeyMapping getOpenWirelessUniversalGrid() {
-        return openWirelessUniversalGrid;
+        return this.openWirelessUniversalGrid;
+    }
+
+    public void setSwitchWirelessUniversalGridType(final KeyMapping switchWirelessUniversalGridType) {
+        this.switchWirelessUniversalGridType = switchWirelessUniversalGridType;
+    }
+
+    @Nullable
+    public KeyMapping getSwitchWirelessUniversalGridType() {
+        return this.switchWirelessUniversalGridType;
     }
 }

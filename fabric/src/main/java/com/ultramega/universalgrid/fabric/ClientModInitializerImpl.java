@@ -22,14 +22,20 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 public class ClientModInitializerImpl extends AbstractClientModInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        registerKeyMappings();
-        registerItemProperties();
-        registerPacketHandlers();
+        this.registerKeyMappings();
+        this.registerItemProperties();
+        this.registerPacketHandlers();
     }
 
     private void registerKeyMappings() {
         KeyMappings.INSTANCE.setOpenWirelessUniversalGrid(KeyBindingHelper.registerKeyBinding(new KeyMapping(
             ContentNames.OPEN_WIRELESS_UNIVERSAL_GRID_TRANSLATION_KEY,
+            InputConstants.Type.KEYSYM,
+            InputConstants.UNKNOWN.getValue(),
+            ContentNames.MOD_TRANSLATION_KEY
+        )));
+        KeyMappings.INSTANCE.setSwitchWirelessUniversalGridType(KeyBindingHelper.registerKeyBinding(new KeyMapping(
+            ContentNames.SWITCH_WIRELESS_UNIVERSAL_GRID_TYPE_TRANSLATION_KEY,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
             ContentNames.MOD_TRANSLATION_KEY

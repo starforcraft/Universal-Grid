@@ -14,17 +14,17 @@ public class ConfigImpl implements Config {
     private final WirelessUniversalGridEntry wirelessUniversalGrid;
 
     public ConfigImpl() {
-        wirelessUniversalGrid = new WirelessUniversalGridEntryImpl();
-        spec = builder.build();
+        this.wirelessUniversalGrid = new WirelessUniversalGridEntryImpl();
+        this.spec = this.builder.build();
     }
 
     public ModConfigSpec getSpec() {
-        return spec;
+        return this.spec;
     }
 
     @Override
     public WirelessUniversalGridEntry getWirelessUniversalGrid() {
-        return wirelessUniversalGrid;
+        return this.wirelessUniversalGrid;
     }
 
     private static String translationKey(final String value) {
@@ -37,10 +37,10 @@ public class ConfigImpl implements Config {
 
         WirelessUniversalGridEntryImpl() {
             builder.translation(translationKey("wirelessUniversalGrid")).push("wirelessUniversalGrid");
-            energyCapacity = builder
+            this.energyCapacity = builder
                 .translation(translationKey("wirelessUniversalGrid.energyCapacity"))
                 .defineInRange("energyCapacity", DefaultEnergyUsage.WIRELESS_UNIVERSAL_GRID_CAPACITY, 0, Long.MAX_VALUE);
-            gridType = builder
+            this.gridType = builder
                 .translation(translationKey("wirelessUniversalGrid.gridType"))
                 .defineEnum("gridType", GridTypes.WIRELESS_GRID);
             builder.pop();
@@ -48,12 +48,12 @@ public class ConfigImpl implements Config {
 
         @Override
         public long getEnergyCapacity() {
-            return energyCapacity.get();
+            return this.energyCapacity.get();
         }
 
         @Override
         public GridTypes getGridType() {
-            return gridType.get();
+            return this.gridType.get();
         }
 
         @Override

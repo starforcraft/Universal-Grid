@@ -3,6 +3,7 @@
   "item.universalgrid.wireless_universal_grid": "Grille universelle sans fil",
   "item.universalgrid.creative_wireless_universal_grid": "Grille universelle sans fil créative",
   "key.universalgrid.open_wireless_universal_grid": "Ouvrir la Grille universelle sans fil",
+  "key.universalgrid.switch_wireless_universal_grid_type": "Switch Wireless Universal Grid Type",
   "text.autoconfig.universalgrid.title": "Configuration de la Grille universelle",
   "universalgrid.configuration.title": "Configuration de la Grille universelle",
   "universalgrid.configuration.section.universalgrid.common.toml": "Configuration de la Grille universelle",

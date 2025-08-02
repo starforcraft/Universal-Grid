@@ -39,17 +39,17 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     @Override
     public void onApiAvailable(final RefinedStorageApi refinedStorageApi) {
         Platform.setConfigProvider(ConfigImpl::get);
-        registerContent(refinedStorageApi);
-        registerCapabilities();
-        registerPackets();
-        registerPacketHandlers();
-        registerCreativeModeTabListener(refinedStorageApi);
+        this.registerContent(refinedStorageApi);
+        this.registerCapabilities();
+        this.registerPackets();
+        this.registerPacketHandlers();
+        this.registerCreativeModeTabListener(refinedStorageApi);
     }
 
     private void registerContent(final RefinedStorageApi refinedStorageApi) {
         final DirectRegistryCallback<Item> itemRegistryCallback = new DirectRegistryCallback<>(BuiltInRegistries.ITEM);
-        registerCustomItems(itemRegistryCallback, refinedStorageApi);
-        registerDataComponents(new DirectRegistryCallback<>(BuiltInRegistries.DATA_COMPONENT_TYPE));
+        this.registerCustomItems(itemRegistryCallback, refinedStorageApi);
+        this.registerDataComponents(new DirectRegistryCallback<>(BuiltInRegistries.DATA_COMPONENT_TYPE));
     }
 
     private void registerCustomItems(final RegistryCallback<Item> callback,
@@ -87,7 +87,7 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     }
 
     private void registerCapabilities() {
-        registerEnergyItemProviders();
+        this.registerEnergyItemProviders();
     }
 
     private void registerPackets() {

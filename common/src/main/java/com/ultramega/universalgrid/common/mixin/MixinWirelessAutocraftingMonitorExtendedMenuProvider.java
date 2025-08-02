@@ -27,7 +27,7 @@ public class MixinWirelessAutocraftingMonitorExtendedMenuProvider implements Mix
 
     @Override
     public @Nullable SlotReference universalgrid$getDisabledSlot() {
-        return universalgrid$disabledSlot;
+        return this.universalgrid$disabledSlot;
     }
 
     @Inject(method = "createMenu", at = @At("TAIL"))
@@ -35,6 +35,6 @@ public class MixinWirelessAutocraftingMonitorExtendedMenuProvider implements Mix
                            final Inventory inventory,
                            final Player player,
                            final CallbackInfoReturnable<AbstractContainerMenu> cir) {
-        ((MixinDisabledSlot) cir.getReturnValue()).universalgrid$setDisabledSlot(universalgrid$disabledSlot);
+        ((MixinDisabledSlot) cir.getReturnValue()).universalgrid$setDisabledSlot(this.universalgrid$disabledSlot);
     }
 }
