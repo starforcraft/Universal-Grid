@@ -51,8 +51,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
     public void renderBackground(final GuiGraphics graphics, final int mouseX, final int mouseY, final float partialTick) {
         this.renderTransparentBackground(graphics);
 
-        final AbstractBaseContainerMenu containerMenu = (AbstractBaseContainerMenu) this.getMenu();
-        if (ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
+        if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
             for (int i = 0; i < TAB_AMOUNT; i++) {
                 final GridTypes gridType = GridTypes.values()[i];
                 final boolean selected = i == ((MixinGridType) containerMenu).universalgrid$getGridType().ordinal();
@@ -114,8 +113,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
 
     @Unique
     private int universalgrid$getHoveringTab(final double mouseX, final double mouseY) {
-        final AbstractBaseContainerMenu containerMenu = (AbstractBaseContainerMenu) this.getMenu();
-        if (ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
+        if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
             for (int i = 0; i < TAB_AMOUNT; i++) {
                 if (this.isHovering(this.universalgrid$getTabX() - this.leftPos + 3, this.universalgrid$getTabY(i) - this.topPos + 2, 24, 22, mouseX, mouseY)) {
                     return i;
