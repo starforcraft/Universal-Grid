@@ -24,6 +24,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.MOD_ID;
 
@@ -72,10 +76,8 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
         this.renderBg(graphics, partialTick, mouseX, mouseY);
     }
 
-    @Override
-    protected void renderTooltip(final GuiGraphics graphics, final int mouseX, final int mouseY) {
-        super.renderTooltip(graphics, mouseX, mouseY);
-
+    @Inject(method = "renderTooltip", at = @At("HEAD"))
+    protected void renderTooltip(final GuiGraphics graphics, final int mouseX, final int mouseY, final CallbackInfo ci) {
         final int hoveringTab = this.universalgrid$getHoveringTab(mouseX, mouseY);
         if (hoveringTab != -1) {
             final GridTypes gridType = GridTypes.values()[hoveringTab];
@@ -83,17 +85,16 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
         }
     }
 
-    @Override
-    public boolean mouseClicked(final double mouseX, final double mouseY, final int clickedButton) {
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    public void mouseClicked(final double mouseX, final double mouseY, final int clickedButton, final CallbackInfoReturnable<Boolean> cir) {
         final int hoveringTab = this.universalgrid$getHoveringTab(mouseX, mouseY);
         if (hoveringTab != -1) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
             final GridTypes gridType = GridTypes.values()[hoveringTab];
             ((MixinGridType) this.getMenu()).universalgrid$setGridType(gridType, Minecraft.getInstance().player);
+            cir.setReturnValue(true);
         }
-
-        return super.mouseClicked(mouseX, mouseY, clickedButton);
     }
 
     @Override
