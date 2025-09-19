@@ -49,10 +49,10 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
     @Unique
     @Override
     public void universalgrid$setGridType(final GridTypes gridType, @Nullable final Player player) {
-        Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
-
-        // Save cursor position
         if (player != null && player.level().isClientSide() && this.disabledSlot != null) {
+            Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+
+            // Save cursor position
             ClientUtils.updateCursorPos(this.disabledSlot, gridType);
 
             // Re-open screen with new grid type (the old screen/container menu will automatically be closed)

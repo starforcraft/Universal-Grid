@@ -2,7 +2,9 @@ package com.ultramega.universalgrid.common.wirelessuniversalgrid;
 
 import com.ultramega.universalgrid.common.Platform;
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
-import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.s2c.UseUniversalGridOnClientPacket;
 import com.ultramega.universalgrid.common.registry.DataComponents;
 
 import com.refinedmods.refinedstorage.api.network.energy.EnergyStorage;
@@ -50,25 +52,36 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         final ItemStack stack = player.getItemInHand(hand);
-        if (player instanceof ServerPlayer serverPlayer && level.getServer() != null) {
-            final SlotReference slotReference = RefinedStorageApi.INSTANCE.createInventorySlotReference(serverPlayer, hand);
-            slotReference.resolve(serverPlayer).ifPresent(s ->
-                this.openCorrectGrid(serverPlayer, s, slotReference));
-        }
+
+        final SlotReference slotReference = RefinedStorageApi.INSTANCE.createInventorySlotReference(player, hand);
+        this.useOnClient(level, stack, slotReference);
+
         return InteractionResultHolder.consume(stack);
     }
 
     @Override
     public void use(final ServerPlayer player, final ItemStack stack, final SlotReference slotReference) {
-        this.openCorrectGrid(player, stack, slotReference);
+        com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToClient(player, new UseUniversalGridOnClientPacket(stack, slotReference));
     }
 
     @Override
     protected void use(@Nullable final Component name, final ServerPlayer player, final SlotReference slotReference, final NetworkItemContext context) {
     }
 
-    private void openCorrectGrid(final ServerPlayer serverPlayer, final ItemStack stack, final SlotReference slotReference) {
-        final GridTypes gridType = Platform.getConfig().getWirelessUniversalGrid().getGridType();
+    public void useOnClient(final Level level, final ItemStack stack, final SlotReference slotReference) {
+        if (level.isClientSide()) {
+            final GridTypes gridType = Platform.getConfig().getWirelessUniversalGrid().getGridType();
+            com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToServer(new UseUniversalGridOnServerPacket(stack, slotReference, gridType));
+        }
+    }
+
+    public void useGridCorrectly(final ServerPlayer serverPlayer, final Level level, final SlotReference slotReference, final GridTypes gridType) {
+        if (level.getServer() != null) {
+            slotReference.resolve(serverPlayer).ifPresent(s -> this.openGridType(serverPlayer, s, slotReference, gridType));
+        }
+    }
+
+    private void openGridType(final ServerPlayer serverPlayer, final ItemStack stack, final SlotReference slotReference, final GridTypes gridType) {
         switch (gridType) {
             case WIRELESS_GRID ->
                 Items.INSTANCE.getWirelessGrid().use(serverPlayer, stack, slotReference);

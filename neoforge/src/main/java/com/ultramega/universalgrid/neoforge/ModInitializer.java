@@ -3,10 +3,12 @@ package com.ultramega.universalgrid.neoforge;
 import com.ultramega.universalgrid.common.AbstractModInitializer;
 import com.ultramega.universalgrid.common.ContentIds;
 import com.ultramega.universalgrid.common.Platform;
-import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
-import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
-import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
-import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.s2c.UseUniversalGridOnClientPacket;
 import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
@@ -131,6 +133,11 @@ public class ModInitializer extends AbstractModInitializer {
             UpdateDisabledSlotPacket.STREAM_CODEC,
             wrapHandler(UpdateDisabledSlotPacket::handle)
         );
+        registrar.playToServer(
+            UseUniversalGridOnServerPacket.PACKET_TYPE,
+            UseUniversalGridOnServerPacket.STREAM_CODEC,
+            wrapHandler(UseUniversalGridOnServerPacket::handle)
+        );
 
         registrar.playToClient(
             SetCursorPosWindowPacket.PACKET_TYPE,
@@ -141,6 +148,11 @@ public class ModInitializer extends AbstractModInitializer {
             SetDisabledSlotPacket.PACKET_TYPE,
             SetDisabledSlotPacket.STREAM_CODEC,
             wrapHandler(SetDisabledSlotPacket::handle)
+        );
+        registrar.playToClient(
+            UseUniversalGridOnClientPacket.PACKET_TYPE,
+            UseUniversalGridOnClientPacket.STREAM_CODEC,
+            wrapHandler(UseUniversalGridOnClientPacket::handle)
         );
     }
 

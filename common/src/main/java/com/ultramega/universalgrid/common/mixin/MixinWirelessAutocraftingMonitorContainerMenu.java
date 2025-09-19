@@ -3,7 +3,7 @@ package com.ultramega.universalgrid.common.mixin;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.interfaces.MixinPlayer;
 import com.ultramega.universalgrid.common.interfaces.MixinUpdateSlot;
-import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AbstractAutocraftingMonitorContainerMenu;

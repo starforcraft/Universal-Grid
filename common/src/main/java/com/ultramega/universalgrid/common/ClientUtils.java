@@ -2,7 +2,7 @@ package com.ultramega.universalgrid.common;
 
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
-import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
+import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
 import com.ultramega.universalgrid.common.registry.Items;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
@@ -24,12 +24,13 @@ public class ClientUtils {
 
         GLFW.glfwGetCursorPos(Minecraft.getInstance().getWindow().getWindow(), x, y);
 
+        Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+
         com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToServer(new SetCursorPosStackPacket(
             gridSlot,
             (int) Math.round(x[0]),
             (int) Math.round(y[0]),
-            true,
-            gridType));
+            true));
     }
 
     public static boolean isUniversalGrid(final AbstractBaseContainerMenu menu, @Nullable final Player player) {

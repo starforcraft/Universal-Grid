@@ -1,4 +1,4 @@
-package com.ultramega.universalgrid.common.packet;
+package com.ultramega.universalgrid.common.packet.s2c;
 
 import com.refinedmods.refinedstorage.common.support.packet.PacketContext;
 

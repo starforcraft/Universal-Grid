@@ -3,10 +3,12 @@ package com.ultramega.universalgrid.fabric;
 import com.ultramega.universalgrid.common.AbstractModInitializer;
 import com.ultramega.universalgrid.common.ContentIds;
 import com.ultramega.universalgrid.common.Platform;
-import com.ultramega.universalgrid.common.packet.SetCursorPosStackPacket;
-import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
-import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
-import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.s2c.UseUniversalGridOnClientPacket;
 import com.ultramega.universalgrid.common.registry.CreativeModeTabItems;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
@@ -93,8 +95,10 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     private void registerPackets() {
         PayloadTypeRegistry.playC2S().register(SetCursorPosStackPacket.PACKET_TYPE, SetCursorPosStackPacket.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(UpdateDisabledSlotPacket.PACKET_TYPE, UpdateDisabledSlotPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(UseUniversalGridOnServerPacket.PACKET_TYPE, UseUniversalGridOnServerPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SetCursorPosWindowPacket.PACKET_TYPE, SetCursorPosWindowPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(SetDisabledSlotPacket.PACKET_TYPE, SetDisabledSlotPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(UseUniversalGridOnClientPacket.PACKET_TYPE, UseUniversalGridOnClientPacket.STREAM_CODEC);
     }
 
     private void registerPacketHandlers() {
@@ -105,6 +109,10 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
         ServerPlayNetworking.registerGlobalReceiver(
             UpdateDisabledSlotPacket.PACKET_TYPE,
             wrapHandler(UpdateDisabledSlotPacket::handle)
+        );
+        ServerPlayNetworking.registerGlobalReceiver(
+            UseUniversalGridOnServerPacket.PACKET_TYPE,
+            wrapHandler(UseUniversalGridOnServerPacket::handle)
         );
     }
 

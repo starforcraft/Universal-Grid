@@ -2,8 +2,9 @@ package com.ultramega.universalgrid.fabric;
 
 import com.ultramega.universalgrid.common.AbstractClientModInitializer;
 import com.ultramega.universalgrid.common.ContentNames;
-import com.ultramega.universalgrid.common.packet.SetCursorPosWindowPacket;
-import com.ultramega.universalgrid.common.packet.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
+import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.s2c.UseUniversalGridOnClientPacket;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
 
@@ -64,6 +65,10 @@ public class ClientModInitializerImpl extends AbstractClientModInitializer imple
         ClientPlayNetworking.registerGlobalReceiver(
             SetDisabledSlotPacket.PACKET_TYPE,
             wrapHandler(SetDisabledSlotPacket::handle)
+        );
+        ClientPlayNetworking.registerGlobalReceiver(
+            UseUniversalGridOnClientPacket.PACKET_TYPE,
+            wrapHandler(UseUniversalGridOnClientPacket::handle)
         );
     }
 

@@ -1,4 +1,4 @@
-package com.ultramega.universalgrid.common.packet;
+package com.ultramega.universalgrid.common.packet.c2s;
 
 import com.ultramega.universalgrid.common.interfaces.MixinUpdateSlot;
 

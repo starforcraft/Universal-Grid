@@ -1,6 +1,6 @@
 package com.ultramega.universalgrid.common.mixin;
 
-import com.ultramega.universalgrid.common.packet.UpdateDisabledSlotPacket;
+import com.ultramega.universalgrid.common.packet.c2s.UpdateDisabledSlotPacket;
 
 import com.refinedmods.refinedstorage.common.Platform;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AutocraftingMonitorScreen;
