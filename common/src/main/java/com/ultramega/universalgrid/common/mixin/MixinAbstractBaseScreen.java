@@ -3,6 +3,7 @@ package com.ultramega.universalgrid.common.mixin;
 import com.ultramega.universalgrid.common.ClientUtils;
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinGridType;
+import com.ultramega.universalgrid.common.interfaces.MixinTabRenderer;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
 
 import com.refinedmods.refinedstorage.common.Platform;
@@ -32,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.MOD_ID;
 
 @Mixin(AbstractBaseScreen.class)
-public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements MixinTabRenderer {
     @Unique
     private static final ResourceLocation SELECTED_TAB_BOTTOM = ResourceLocation.fromNamespaceAndPath(MOD_ID, "selected_tab_bottom");
     @Unique
@@ -47,10 +48,9 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
         super(menu, playerInventory, title);
     }
 
+    @Unique
     @Override
-    public void renderBackground(final GuiGraphics graphics, final int mouseX, final int mouseY, final float partialTick) {
-        this.renderTransparentBackground(graphics);
-
+    public void universalgrid$renderGridTabs(final GuiGraphics graphics) {
         if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
             for (int i = 0; i < TAB_AMOUNT; i++) {
                 final GridTypes gridType = GridTypes.values()[i];
@@ -71,8 +71,6 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
                 poseStack.popPose();
             }
         }
-
-        this.renderBg(graphics, partialTick, mouseX, mouseY);
     }
 
     @Inject(method = "renderTooltip", at = @At("HEAD"))

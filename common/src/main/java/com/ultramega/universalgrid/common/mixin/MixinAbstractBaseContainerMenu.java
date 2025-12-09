@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(AbstractBaseContainerMenu.class)
 public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMenu implements MixinDisabledSlot, MixinGridType {
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
     protected SlotReference disabledSlot;
 
@@ -30,8 +30,9 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
     }
 
     @Unique
+    @Nullable
     @Override
-    public @Nullable SlotReference universalgrid$getDisabledSlot() {
+    public SlotReference universalgrid$getDisabledSlot() {
         return this.disabledSlot;
     }
 

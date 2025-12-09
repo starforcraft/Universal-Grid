@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(AbstractAutocraftingMonitorContainerMenu.class)
-public class MixinAbstractAutocraftingMonitorContainerMenu implements MixinPlayer {
+public abstract class MixinAbstractAutocraftingMonitorContainerMenu implements MixinPlayer {
     @Final
-    @Shadow
+    @Shadow(remap = false)
     private Player player;
 
     @Override
