@@ -5,6 +5,7 @@ import com.ultramega.universalgrid.common.ContentNames;
 import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
 import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
 import com.ultramega.universalgrid.common.packet.s2c.UseUniversalGridOnClientPacket;
+import com.ultramega.universalgrid.common.radialmenu.GridSelectionOverlay;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
 
@@ -16,6 +17,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -41,7 +43,8 @@ public class ClientModInitializerImpl extends AbstractClientModInitializer imple
             InputConstants.UNKNOWN.getValue(),
             ContentNames.MOD_TRANSLATION_KEY
         )));
-        ClientTickEvents.END_CLIENT_TICK.register(client -> handleInputEvents());
+        ClientTickEvents.END_CLIENT_TICK.register(client -> tickInputEvents());
+        HudRenderCallback.EVENT.register(GridSelectionOverlay.INSTANCE::render);
     }
 
     private void registerItemProperties() {

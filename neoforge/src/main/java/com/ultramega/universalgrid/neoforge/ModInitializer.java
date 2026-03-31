@@ -61,6 +61,7 @@ public class ModInitializer extends AbstractModInitializer {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             eventBus.addListener(ClientModInitializer::onClientSetup);
             eventBus.addListener(ClientModInitializer::onRegisterKeyMappings);
+            eventBus.addListener(ClientModInitializer::registerGuiLayers);
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
         this.registerContent(eventBus);

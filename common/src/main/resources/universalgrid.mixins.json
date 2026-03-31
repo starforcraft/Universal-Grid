@@ -8,7 +8,9 @@
     "MixinAbstractBaseContainerMenu",
     "MixinWirelessAutocraftingMonitorContainerMenu",
     "MixinWirelessAutocraftingMonitorExtendedMenuProvider",
-    "MixinWirelessAutocraftingMonitorItem"
+    "MixinWirelessAutocraftingMonitorItem",
+    "AccessorRefinedStorageApiImpl",
+    "InvokerRefinedStorageApiProxy"
   ],
   "client": [
     "MixinAbstractBaseScreen",

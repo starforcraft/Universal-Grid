@@ -2,6 +2,8 @@ package com.ultramega.universalgrid.neoforge;
 
 import com.ultramega.universalgrid.common.AbstractClientModInitializer;
 import com.ultramega.universalgrid.common.ContentNames;
+import com.ultramega.universalgrid.common.UniversalGridIdentifierUtil;
+import com.ultramega.universalgrid.common.radialmenu.GridSelectionOverlay;
 import com.ultramega.universalgrid.common.registry.Items;
 import com.ultramega.universalgrid.common.registry.KeyMappings;
 
@@ -10,9 +12,11 @@ import com.refinedmods.refinedstorage.common.support.network.item.NetworkItemPro
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,19 +24,13 @@ import net.neoforged.neoforge.common.NeoForge;
 public class ClientModInitializer extends AbstractClientModInitializer {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent e) {
-        NeoForge.EVENT_BUS.addListener(ClientModInitializer::onKeyInput);
-        NeoForge.EVENT_BUS.addListener(ClientModInitializer::onMouseInput);
+        NeoForge.EVENT_BUS.addListener(ClientModInitializer::onClientTick);
         e.enqueueWork(ClientModInitializer::registerItemProperties);
     }
 
     @SubscribeEvent
-    public static void onKeyInput(final InputEvent.Key e) {
-        handleInputEvents();
-    }
-
-    @SubscribeEvent
-    public static void onMouseInput(final InputEvent.MouseButton.Pre e) {
-        handleInputEvents();
+    public static void onClientTick(final ClientTickEvent.Post e) {
+        tickInputEvents();
     }
 
     @SubscribeEvent
@@ -54,6 +52,11 @@ public class ClientModInitializer extends AbstractClientModInitializer {
         );
         e.register(switchWirelessUniversalGridType);
         KeyMappings.INSTANCE.setSwitchWirelessUniversalGridType(switchWirelessUniversalGridType);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiLayers(final RegisterGuiLayersEvent event) {
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(UniversalGridIdentifierUtil.MOD_ID, "grid_types_selection"), GridSelectionOverlay.INSTANCE);
     }
 
     private static void registerItemProperties() {
