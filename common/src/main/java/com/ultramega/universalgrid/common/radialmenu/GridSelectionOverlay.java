@@ -53,7 +53,7 @@ public class GridSelectionOverlay extends RadialMenuRenderer<GridTypes> implemen
 
         if (this.onSelectGrid != null) {
             final int selectionIndex = this.getElementUnderMouse();
-            if (selectionIndex != -1) {
+            if (selectionIndex != -1 && this.getEntries().size() > selectionIndex) {
                 final GridTypes gridType = this.getEntries().get(selectionIndex);
                 this.onSelectGrid.accept(gridType);
             }
