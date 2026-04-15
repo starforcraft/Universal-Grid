@@ -5,18 +5,17 @@ import com.ultramega.universalgrid.common.gui.view.GridTypes;
 
 import java.util.List;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 
-public class GridSelectionOverlay extends RadialMenuRenderer<GridTypes> implements LayeredDraw.Layer {
+public class GridSelectionOverlay extends RadialMenuRenderer<GridTypes> {
     public static final GridSelectionOverlay INSTANCE = new GridSelectionOverlay();
 
     @Nullable
@@ -24,13 +23,12 @@ public class GridSelectionOverlay extends RadialMenuRenderer<GridTypes> implemen
     @Nullable
     private GridBundle displayedGrid;
 
-    @Override
-    public void render(final GuiGraphics graphics, final DeltaTracker deltaTracker) {
+    public void render(final GuiGraphicsExtractor graphics, final DeltaTracker deltaTracker) {
         if (!this.isOpened()) {
             return;
         }
 
-        super.render(graphics);
+        super.extractRenderState(graphics);
     }
 
     @Override

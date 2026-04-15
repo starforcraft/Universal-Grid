@@ -3,9 +3,9 @@ package com.ultramega.universalgrid.common.registry;
 import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridState;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.component.DataComponentType;
+import org.jspecify.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 

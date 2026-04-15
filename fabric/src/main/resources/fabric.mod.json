@@ -11,6 +11,7 @@
     "sources": "https://github.com/starforcraft/Universal-Grid",
     "issues": "https://github.com/starforcraft/Universal-Grid/issues"
   },
+  "accessWidener": "universalgrid.accesswidener",
   "icon": "logo.png",
   "license": "MIT",
   "environment": "*",
@@ -40,12 +41,12 @@
     "universalgrid.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.6",
+    "fabricloader": "*",
     "fabric-api": "*",
-    "minecraft": "~1.21",
-    "refinedstorage": ">=2.0.0-beta.7",
-    "refinedstorage_quartz_arsenal": ">=1.0.4",
-    "java": ">=21",
+    "minecraft": "~26.1",
+    "refinedstorage": ">=3.0.0-beta.1",
+    "refinedstorage_quartz_arsenal": ">=2.0.0",
+    "java": ">=25",
     "cloth-config2": "*",
     "team_reborn_energy": "*"
   },

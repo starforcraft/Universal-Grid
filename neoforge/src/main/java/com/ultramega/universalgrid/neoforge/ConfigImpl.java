@@ -36,14 +36,14 @@ public class ConfigImpl implements Config {
         private final ModConfigSpec.EnumValue<GridTypes> gridType;
 
         WirelessUniversalGridEntryImpl() {
-            builder.translation(translationKey("wirelessUniversalGrid")).push("wirelessUniversalGrid");
-            this.energyCapacity = builder
+            ConfigImpl.this.builder.translation(translationKey("wirelessUniversalGrid")).push("wirelessUniversalGrid");
+            this.energyCapacity = ConfigImpl.this.builder
                 .translation(translationKey("wirelessUniversalGrid.energyCapacity"))
                 .defineInRange("energyCapacity", DefaultEnergyUsage.WIRELESS_UNIVERSAL_GRID_CAPACITY, 0, Long.MAX_VALUE);
-            this.gridType = builder
+            this.gridType = ConfigImpl.this.builder
                 .translation(translationKey("wirelessUniversalGrid.gridType"))
                 .defineEnum("gridType", GridTypes.WIRELESS_GRID);
-            builder.pop();
+            ConfigImpl.this.builder.pop();
         }
 
         @Override

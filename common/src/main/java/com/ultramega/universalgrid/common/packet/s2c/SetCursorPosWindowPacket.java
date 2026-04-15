@@ -20,7 +20,7 @@ public record SetCursorPosWindowPacket(int cursorX, int cursorY) implements Cust
     );
 
     public static void handle(final SetCursorPosWindowPacket packet, final PacketContext ctx) {
-        GLFW.glfwSetCursorPos(Minecraft.getInstance().getWindow().getWindow(), packet.cursorX(), packet.cursorY());
+        GLFW.glfwSetCursorPos(Minecraft.getInstance().getWindow().handle(), packet.cursorX(), packet.cursorY());
     }
 
     @Override

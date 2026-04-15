@@ -1,7 +1,7 @@
 package com.ultramega.universalgrid.common.mixin;
 
 import com.ultramega.universalgrid.common.ClientUtils;
-import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.PlatformProxy;
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.interfaces.MixinGridType;
@@ -10,11 +10,10 @@ import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotRefer
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 import com.refinedmods.refinedstorage.common.support.packet.c2s.C2SPackets;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,14 +43,14 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
     @Unique
     @Override
     public GridTypes universalgrid$getGridType() {
-        return Platform.getConfig().getWirelessUniversalGrid().getGridType();
+        return PlatformProxy.getConfig().getWirelessUniversalGrid().getGridType();
     }
 
     @Unique
     @Override
     public void universalgrid$setGridType(final GridTypes gridType, @Nullable final Player player) {
         if (player != null && player.level().isClientSide() && this.disabledSlot != null) {
-            Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+            PlatformProxy.getConfig().getWirelessUniversalGrid().setGridType(gridType);
 
             // Save cursor position
             ClientUtils.updateCursorPos(this.disabledSlot, gridType);

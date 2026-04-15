@@ -1,7 +1,7 @@
 package com.ultramega.universalgrid.common.interfaces;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface MixinTabRenderer {
-    void universalgrid$renderGridTabs(GuiGraphics graphics);
+    void universalgrid$renderGridTabs(GuiGraphicsExtractor graphics, boolean onlySelected);
 }

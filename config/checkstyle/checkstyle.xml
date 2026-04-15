@@ -36,7 +36,6 @@
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
-        <module name="AvoidNestedBlocks"/>
         <module name="AvoidStarImport"/>
         <module name="ImportControl">
             <property name="file" value="${config_loc}/checkstyle-imports.xml"/>

@@ -2,7 +2,7 @@ package com.ultramega.universalgrid.neoforge;
 
 import com.ultramega.universalgrid.common.AbstractModInitializer;
 import com.ultramega.universalgrid.common.ContentIds;
-import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.PlatformProxy;
 import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
 import com.ultramega.universalgrid.common.packet.c2s.UpdateDisabledSlotPacket;
 import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
@@ -16,7 +16,7 @@ import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversa
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
-import com.refinedmods.refinedstorage.neoforge.support.energy.EnergyStorageAdapter;
+import com.refinedmods.refinedstorage.neoforge.support.energy.EnergyStorageEnergyHandlerAdapter;
 
 import java.util.function.Supplier;
 
@@ -24,8 +24,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,8 +57,9 @@ public class ModInitializer extends AbstractModInitializer {
     public ModInitializer(final IEventBus eventBus, final ModContainer modContainer) {
         final ConfigImpl config = new ConfigImpl();
         modContainer.registerConfig(ModConfig.Type.COMMON, config.getSpec());
-        Platform.setConfigProvider(() -> config);
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        PlatformProxy.setConfigProvider(() -> config);
+        PlatformProxy.loadPlatform(new PlatformImpl());
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             eventBus.addListener(ClientModInitializer::onClientSetup);
             eventBus.addListener(ClientModInitializer::onRegisterKeyMappings);
             eventBus.addListener(ClientModInitializer::registerGuiLayers);
@@ -82,12 +83,9 @@ public class ModInitializer extends AbstractModInitializer {
     }
 
     private void registerCustomItems(final RegistryCallback<Item> callback) {
-        Items.INSTANCE.setWirelessUniversalGrid(
-            callback.register(ContentIds.WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(
-                false,
-                RefinedStorageApi.INSTANCE.getEnergyItemHelper(),
-                RefinedStorageApi.INSTANCE.getNetworkItemHelper()
-            ) {
+        Items.INSTANCE.setWirelessUniversalGrid(callback.register(
+            ContentIds.WIRELESS_UNIVERSAL_GRID,
+            () -> new WirelessUniversalGridItem(false) {
                 @Override
                 public boolean shouldCauseReequipAnimation(final ItemStack oldStack,
                                                            final ItemStack newStack,
@@ -96,12 +94,8 @@ public class ModInitializer extends AbstractModInitializer {
                 }
             })
         );
-        Items.INSTANCE.setCreativeWirelessUniversalGrid(
-            callback.register(ContentIds.CREATIVE_WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(
-                true,
-                RefinedStorageApi.INSTANCE.getEnergyItemHelper(),
-                RefinedStorageApi.INSTANCE.getNetworkItemHelper()
-            ) {
+        Items.INSTANCE.setCreativeWirelessUniversalGrid(callback.register(
+            ContentIds.CREATIVE_WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(true) {
                 @Override
                 public boolean shouldCauseReequipAnimation(final ItemStack oldStack,
                                                            final ItemStack newStack,
@@ -159,8 +153,8 @@ public class ModInitializer extends AbstractModInitializer {
 
     private void registerEnergyItemProviders(final RegisterCapabilitiesEvent event) {
         event.registerItem(
-            Capabilities.EnergyStorage.ITEM,
-            (stack, ctx) -> new EnergyStorageAdapter(
+            Capabilities.Energy.ITEM,
+            (stack, ctx) -> new EnergyStorageEnergyHandlerAdapter(
                 Items.INSTANCE.getWirelessUniversalGrid().createEnergyStorage(stack)
             ),
             Items.INSTANCE.getWirelessUniversalGrid()
@@ -184,7 +178,7 @@ public class ModInitializer extends AbstractModInitializer {
 
     private record ForgeRegistryCallback<T>(DeferredRegister<T> registry) implements RegistryCallback<T> {
         @Override
-        public <R extends T> Supplier<R> register(final ResourceLocation id, final Supplier<R> value) {
+        public <R extends T> Supplier<R> register(final Identifier id, final Supplier<R> value) {
             return this.registry.register(id.getPath(), value);
         }
     }

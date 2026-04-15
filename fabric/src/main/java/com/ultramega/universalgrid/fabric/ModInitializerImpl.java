@@ -2,7 +2,7 @@ package com.ultramega.universalgrid.fabric;
 
 import com.ultramega.universalgrid.common.AbstractModInitializer;
 import com.ultramega.universalgrid.common.ContentIds;
-import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.PlatformProxy;
 import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
 import com.ultramega.universalgrid.common.packet.c2s.UpdateDisabledSlotPacket;
 import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
@@ -23,7 +23,7 @@ import com.refinedmods.refinedstorage.fabric.support.energy.EnergyStorageAdapter
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -40,7 +40,8 @@ import team.reborn.energy.api.EnergyStorage;
 public class ModInitializerImpl extends AbstractModInitializer implements RefinedStoragePlugin, ModInitializer {
     @Override
     public void onApiAvailable(final RefinedStorageApi refinedStorageApi) {
-        Platform.setConfigProvider(ConfigImpl::get);
+        PlatformProxy.setConfigProvider(ConfigImpl::get);
+        PlatformProxy.loadPlatform(new PlatformImpl());
         this.registerContent(refinedStorageApi);
         this.registerCapabilities();
         this.registerPackets();
@@ -57,11 +58,7 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     private void registerCustomItems(final RegistryCallback<Item> callback,
                                      final RefinedStorageApi refinedStorageApi) {
         Items.INSTANCE.setWirelessUniversalGrid(
-            callback.register(ContentIds.WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(
-                false,
-                refinedStorageApi.getEnergyItemHelper(),
-                refinedStorageApi.getNetworkItemHelper()
-            ) {
+            callback.register(ContentIds.WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(false) {
                 @Override
                 public boolean allowComponentsUpdateAnimation(final Player player,
                                                               final InteractionHand hand,
@@ -72,11 +69,7 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
             })
         );
         Items.INSTANCE.setCreativeWirelessUniversalGrid(
-            callback.register(ContentIds.CREATIVE_WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(
-                true,
-                refinedStorageApi.getEnergyItemHelper(),
-                refinedStorageApi.getNetworkItemHelper()
-            ) {
+            callback.register(ContentIds.CREATIVE_WIRELESS_UNIVERSAL_GRID, () -> new WirelessUniversalGridItem(true) {
                 @Override
                 public boolean allowComponentsUpdateAnimation(final Player player,
                                                               final InteractionHand hand,
@@ -93,12 +86,13 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
     }
 
     private void registerPackets() {
-        PayloadTypeRegistry.playC2S().register(SetCursorPosStackPacket.PACKET_TYPE, SetCursorPosStackPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(UpdateDisabledSlotPacket.PACKET_TYPE, UpdateDisabledSlotPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(UseUniversalGridOnServerPacket.PACKET_TYPE, UseUniversalGridOnServerPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playS2C().register(SetCursorPosWindowPacket.PACKET_TYPE, SetCursorPosWindowPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playS2C().register(SetDisabledSlotPacket.PACKET_TYPE, SetDisabledSlotPacket.STREAM_CODEC);
-        PayloadTypeRegistry.playS2C().register(UseUniversalGridOnClientPacket.PACKET_TYPE, UseUniversalGridOnClientPacket.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(SetCursorPosStackPacket.PACKET_TYPE, SetCursorPosStackPacket.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(UpdateDisabledSlotPacket.PACKET_TYPE, UpdateDisabledSlotPacket.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(UseUniversalGridOnServerPacket.PACKET_TYPE, UseUniversalGridOnServerPacket.STREAM_CODEC);
+
+        PayloadTypeRegistry.clientboundPlay().register(SetCursorPosWindowPacket.PACKET_TYPE, SetCursorPosWindowPacket.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(SetDisabledSlotPacket.PACKET_TYPE, SetDisabledSlotPacket.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(UseUniversalGridOnClientPacket.PACKET_TYPE, UseUniversalGridOnClientPacket.STREAM_CODEC);
     }
 
     private void registerPacketHandlers() {
@@ -135,7 +129,7 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
             Registries.CREATIVE_MODE_TAB,
             refinedStorageApi.getCreativeModeTabId()
         );
-        ItemGroupEvents.modifyEntriesEvent(creativeModeTab).register(
+        CreativeModeTabEvents.modifyOutputEvent(creativeModeTab).register(
             entries -> CreativeModeTabItems.addItems(entries::accept)
         );
     }

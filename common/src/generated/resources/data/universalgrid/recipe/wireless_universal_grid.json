@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "refinedstorage_quartz_arsenal:wireless_crafting_grid",
+    "D": "minecraft:diamond",
+    "F": "refinedstorage:wireless_autocrafting_monitor",
+    "G": "refinedstorage:wireless_grid",
+    "Q": "refinedstorage:quartz_enriched_iron"
+  },
+  "pattern": [
+    "DFD",
+    "QGQ",
+    "DCD"
+  ],
+  "result": {
+    "id": "universalgrid:wireless_universal_grid"
+  }
+}

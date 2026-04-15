@@ -1,6 +1,6 @@
 package com.ultramega.universalgrid.common.packet.c2s;
 
-import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.PlatformProxy;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReferenceFactory;
@@ -25,7 +25,7 @@ public record SetCursorPosStackPacket(SlotReference slotReference, int cursorX, 
 
     public static void handle(final SetCursorPosStackPacket packet, final PacketContext ctx) {
         packet.slotReference().resolve(ctx.getPlayer()).ifPresent(stack ->
-            Platform.setWirelessUniversalGridState(stack, packet.cursorX, packet.cursorY, packet.applyCursorPos));
+            PlatformProxy.setWirelessUniversalGridState(stack, packet.cursorX, packet.cursorY, packet.applyCursorPos));
     }
 
     @Override

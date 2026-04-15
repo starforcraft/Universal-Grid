@@ -3,7 +3,8 @@ package com.ultramega.universalgrid.common.registry;
 import com.ultramega.universalgrid.common.wirelessuniversalgrid.WirelessUniversalGridItem;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+
+import org.jspecify.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 

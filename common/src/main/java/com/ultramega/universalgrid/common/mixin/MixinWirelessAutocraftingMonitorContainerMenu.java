@@ -10,12 +10,11 @@ import com.refinedmods.refinedstorage.common.autocrafting.monitor.AbstractAutocr
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AutocraftingMonitorData;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.WirelessAutocraftingMonitorContainerMenu;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(WirelessAutocraftingMonitorContainerMenu.class)

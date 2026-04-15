@@ -1,6 +1,6 @@
 package com.ultramega.universalgrid.common;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class UniversalGridIdentifierUtil {
     public static final String MOD_ID = "universalgrid";
@@ -8,8 +8,8 @@ public final class UniversalGridIdentifierUtil {
     private UniversalGridIdentifierUtil() {
     }
 
-    public static ResourceLocation createUniversalGridIdentifier(final String value) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, value);
+    public static Identifier createUniversalGridIdentifier(final String value) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, value);
     }
 
     public static String createUniversalGridTranslationKey(final String category, final String value) {

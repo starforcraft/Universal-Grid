@@ -2,7 +2,7 @@ package com.ultramega.universalgrid.common.interfaces;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public interface MixinDisabledSlot {
     @Nullable

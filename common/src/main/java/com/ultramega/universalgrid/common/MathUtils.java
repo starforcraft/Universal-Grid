@@ -11,4 +11,11 @@ public final class MathUtils {
         }
         return newAngle;
     }
+
+    public static int rgbaToArgb(final float r, final float g, final float b, final float a) {
+        return ((int) (a * 255) << 24)
+            | ((int) (r * 255) << 16)
+            | ((int) (g * 255) << 8)
+            | (int) (b * 255);
+    }
 }

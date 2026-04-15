@@ -2,9 +2,8 @@ package com.ultramega.universalgrid.common.interfaces;
 
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.world.entity.player.Player;
+import org.jspecify.annotations.Nullable;
 
 public interface MixinGridType {
     GridTypes universalgrid$getGridType();

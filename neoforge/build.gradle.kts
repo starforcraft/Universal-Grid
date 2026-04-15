@@ -18,6 +18,7 @@ refinedarchitect {
     modId = "universalgrid"
     version = modVersion
     neoForge()
+    dataGeneration(project(":common"))
     publishing {
         maven = true
     }

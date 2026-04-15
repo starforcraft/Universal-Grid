@@ -8,10 +8,9 @@ import com.ultramega.universalgrid.common.registry.Items;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 public class ClientUtils {
@@ -22,9 +21,9 @@ public class ClientUtils {
         final double[] x = new double[1];
         final double[] y = new double[1];
 
-        GLFW.glfwGetCursorPos(Minecraft.getInstance().getWindow().getWindow(), x, y);
+        GLFW.glfwGetCursorPos(Minecraft.getInstance().getWindow().handle(), x, y);
 
-        Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+        PlatformProxy.getConfig().getWirelessUniversalGrid().setGridType(gridType);
 
         com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToServer(new SetCursorPosStackPacket(
             gridSlot,

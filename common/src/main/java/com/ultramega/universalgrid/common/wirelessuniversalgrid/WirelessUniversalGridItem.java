@@ -1,6 +1,7 @@
 package com.ultramega.universalgrid.common.wirelessuniversalgrid;
 
-import com.ultramega.universalgrid.common.Platform;
+import com.ultramega.universalgrid.common.ContentIds;
+import com.ultramega.universalgrid.common.PlatformProxy;
 import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.packet.c2s.UseUniversalGridOnServerPacket;
 import com.ultramega.universalgrid.common.packet.s2c.SetCursorPosWindowPacket;
@@ -11,52 +12,47 @@ import com.refinedmods.refinedstorage.api.network.energy.EnergyStorage;
 import com.refinedmods.refinedstorage.api.network.impl.energy.EnergyStorageImpl;
 import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.api.support.energy.AbstractNetworkEnergyItem;
-import com.refinedmods.refinedstorage.common.api.support.energy.EnergyItemHelper;
 import com.refinedmods.refinedstorage.common.api.support.network.item.NetworkItemContext;
-import com.refinedmods.refinedstorage.common.api.support.network.item.NetworkItemHelper;
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 import com.refinedmods.refinedstorage.common.content.Items;
 
-import javax.annotation.Nullable;
-
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 
 public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
-    private final boolean creative;
-
-    public WirelessUniversalGridItem(final boolean creative,
-                                     final EnergyItemHelper energyItemHelper,
-                                     final NetworkItemHelper networkItemHelper) {
+    public WirelessUniversalGridItem(final boolean creative) {
         super(
-            new Item.Properties().stacksTo(1),
-            energyItemHelper,
-            networkItemHelper
+            new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM,
+                creative ? ContentIds.CREATIVE_WIRELESS_UNIVERSAL_GRID : ContentIds.WIRELESS_UNIVERSAL_GRID)),
+            RefinedStorageApi.INSTANCE.getEnergyItemHelper(),
+            RefinedStorageApi.INSTANCE.getNetworkItemHelper()
         );
-        this.creative = creative;
     }
 
     public EnergyStorage createEnergyStorage(final ItemStack stack) {
         final EnergyStorage energyStorage = new EnergyStorageImpl(
-            Platform.getConfig().getWirelessUniversalGrid().getEnergyCapacity()
+            PlatformProxy.getConfig().getWirelessUniversalGrid().getEnergyCapacity()
         );
         return RefinedStorageApi.INSTANCE.asItemEnergyStorage(energyStorage, stack);
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
+    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
         final ItemStack stack = player.getItemInHand(hand);
 
         final SlotReference slotReference = RefinedStorageApi.INSTANCE.createInventorySlotReference(player, hand);
         this.useOnClient(level, stack, slotReference);
 
-        return InteractionResultHolder.consume(stack);
+        return InteractionResult.CONSUME;
     }
 
     @Override
@@ -70,7 +66,7 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
 
     public void useOnClient(final Level level, final ItemStack stack, final SlotReference slotReference) {
         if (level.isClientSide()) {
-            final GridTypes gridType = Platform.getConfig().getWirelessUniversalGrid().getGridType();
+            final GridTypes gridType = PlatformProxy.getConfig().getWirelessUniversalGrid().getGridType();
             com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToServer(new UseUniversalGridOnServerPacket(stack, slotReference, gridType));
         }
     }
@@ -103,6 +99,6 @@ public class WirelessUniversalGridItem extends AbstractNetworkEnergyItem {
         com.refinedmods.refinedstorage.common.Platform.INSTANCE.sendPacketToClient(serverPlayer,
             new SetCursorPosWindowPacket(state.cursorX(), state.cursorY()));
 
-        Platform.setWirelessUniversalGridState(stack, state.cursorX(), state.cursorY(), false);
+        PlatformProxy.setWirelessUniversalGridState(stack, state.cursorX(), state.cursorY(), false);
     }
 }

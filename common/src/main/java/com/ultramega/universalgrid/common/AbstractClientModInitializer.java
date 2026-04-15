@@ -74,7 +74,7 @@ public abstract class AbstractClientModInitializer {
             accessor.getSlotReferenceProvider().findForUse(player, (Item) validItems.toArray()[0], validItems)
                 .ifPresent((slotReference) ->
                     slotReference.resolve(player).ifPresent((grid) -> {
-                        com.ultramega.universalgrid.common.Platform.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+                        PlatformProxy.getConfig().getWirelessUniversalGrid().setGridType(gridType);
                         Platform.INSTANCE.sendPacketToServer(new UseUniversalGridOnServerPacket(grid, slotReference, gridType));
                     }));
         }

@@ -3,12 +3,12 @@ package com.ultramega.universalgrid.common.gui.view;
 import com.refinedmods.refinedstorage.common.util.IdentifierUtil;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jspecify.annotations.Nullable;
 
 public enum GridTypes implements StringRepresentable {
     WIRELESS_GRID(Items.CHEST::getDefaultInstance,

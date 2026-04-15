@@ -1,28 +1,27 @@
 package com.ultramega.universalgrid.common.radialmenu;
 
 import com.ultramega.universalgrid.common.MathUtils;
+import com.ultramega.universalgrid.common.PlatformProxy;
+import com.ultramega.universalgrid.common.mixin.AccessorGuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
+
+import static com.ultramega.universalgrid.common.MathUtils.rgbaToArgb;
 
 /**
  * This is heavily inspired by <a href="https://github.com/MatyrobbrtMods/KeyBindBundles/blob/main/src/main/java/com/matyrobbrt/keybindbundles/render/RadialMenuRenderer.java">KeybindBundles</a>
@@ -45,14 +44,14 @@ public abstract class RadialMenuRenderer<T> {
 
     public abstract ItemStack getIcon(T entry);
 
-    public void render(final GuiGraphics graphics) {
+    public void extractRenderState(final GuiGraphicsExtractor graphics) {
         final List<T> entries = this.getEntries();
         if (entries.isEmpty()) {
             return;
         }
 
         final Minecraft mc = Minecraft.getInstance();
-        final PoseStack poseStack = graphics.pose();
+        final Matrix3x2fStack poseStack = graphics.pose();
 
         mc.mouseHandler.releaseMouse();
 
@@ -69,19 +68,17 @@ public abstract class RadialMenuRenderer<T> {
             this.lastIndexUnderMouse = indexUnderMouse;
         }
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
         final float centerX = graphics.guiWidth() / 2f;
         final float centerY = graphics.guiHeight() / 2f;
-        poseStack.pushPose();
-        poseStack.translate(centerX, centerY, 0f);
+        poseStack.pushMatrix();
+        poseStack.translate(centerX, centerY);
 
         for (int i = 0; i < entries.size(); i++) {
             final boolean highlight = this.lastIndexUnderMouse == i;
             final float startAngle = -90F + 360F * (-0.5F + i) / count;
+
             RadialMenuRenderer.drawTorus(graphics, startAngle, angleSize, INNER, OUTER + 10f * (this.hoverGrows[i] / 10f),
-                0.3f, 0.3f, 0.3f, highlight ? 0.85F : 0.6F);
+                rgbaToArgb(0.3f, 0.3f, 0.3f, highlight ? 0.85F : 0.6F));
         }
 
         if (!mc.mouseHandler.isMouseGrabbed()) {
@@ -116,25 +113,25 @@ public abstract class RadialMenuRenderer<T> {
             if (!icon.isEmpty()) {
                 textToDraw.add(new PositionedText(x, y, this.getTitle(key)));
 
-                graphics.renderItem(icon, Math.round(x - 8), Math.round(y - 8 - 2 - 9));
+                graphics.item(icon, Math.round(x - 8), Math.round(y - 8 - 2 - 9));
             }
         }
 
         final Font font = mc.font;
         if (!textToDraw.isEmpty()) {
             for (final PositionedText toDraw : textToDraw) {
-                poseStack.pushPose();
-                poseStack.translate(toDraw.x, toDraw.y, 120F);
-                poseStack.scale(0.6F, 0.6F, 0.6F);
-                final Component text = toDraw.text;
-                graphics.drawString(font, text.getVisualOrderText(), (int) (-font.width(text) / 2F), 8, 0xCCFFFFFF, true);
-                poseStack.popPose();
+                poseStack.pushMatrix();
+                {
+                    poseStack.translate(toDraw.x, toDraw.y);
+                    poseStack.scale(0.6F, 0.6F);
+                    final Component text = toDraw.text;
+                    graphics.text(font, text.getVisualOrderText(), (int) (-font.width(text) / 2F), 8, 0xCCFFFFFF, true);
+                }
+                poseStack.popMatrix();
             }
         }
 
-        poseStack.popPose();
-
-        RenderSystem.disableBlend();
+        poseStack.popMatrix();
     }
 
     public static MousePos getMousePos() {
@@ -178,30 +175,24 @@ public abstract class RadialMenuRenderer<T> {
         this.hoverGrows = new int[0];
     }
 
-    private static void drawTorus(final GuiGraphics graphics,
+    private static void drawTorus(final GuiGraphicsExtractor graphics,
                                   final float startAngle,
                                   final float sizeAngle,
                                   final float inner,
                                   final float outer,
-                                  final float red,
-                                  final float green,
-                                  final float blue,
-                                  final float alpha) {
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        final var vertexBuffer = Tesselator.getInstance().begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-        final var matrix4f = graphics.pose().last().pose();
-        final float draws = DRAWS * (sizeAngle / 360F);
-        for (int i = 0; i <= draws; i++) {
-            final float degrees = startAngle + (i / DRAWS) * 360;
-            final float angle = Mth.DEG_TO_RAD * degrees;
-            final float cos = Mth.cos(angle);
-            final float sin = Mth.sin(angle);
-            vertexBuffer.addVertex(matrix4f, outer * cos, outer * sin, 0)
-                .setColor(red, green, blue, alpha);
-            vertexBuffer.addVertex(matrix4f, inner * cos, inner * sin, 0)
-                .setColor(red, green, blue, alpha);
-        }
-        BufferUploader.drawWithShader(vertexBuffer.buildOrThrow());
+                                  final int argb) {
+        final Matrix3x2f pose = new Matrix3x2f(graphics.pose());
+
+        ((AccessorGuiGraphicsExtractor) graphics).getGuiRenderState()
+            .addGuiElement(new TorusRenderState(
+                pose,
+                startAngle,
+                sizeAngle,
+                inner,
+                outer,
+                argb,
+                PlatformProxy.INSTANCE.peekScissorStack(graphics)
+            ));
     }
 
     public record MousePos(double x, double y) {

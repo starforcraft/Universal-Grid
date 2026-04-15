@@ -4,11 +4,10 @@ import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 
 import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

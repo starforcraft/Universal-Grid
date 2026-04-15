@@ -12,14 +12,16 @@ import com.refinedmods.refinedstorage.common.support.AbstractBaseScreen;
 
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,16 +32,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.MOD_ID;
+import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.createUniversalGridIdentifier;
+import static net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED;
 
 @Mixin(AbstractBaseScreen.class)
 public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements MixinTabRenderer {
     @Unique
-    private static final ResourceLocation SELECTED_TAB_BOTTOM = ResourceLocation.fromNamespaceAndPath(MOD_ID, "selected_tab_bottom");
+    private static final Identifier SELECTED_TAB_BOTTOM = createUniversalGridIdentifier("selected_tab_bottom");
     @Unique
-    private static final ResourceLocation SELECTED_TAB = ResourceLocation.fromNamespaceAndPath(MOD_ID, "selected_tab");
+    private static final Identifier SELECTED_TAB = createUniversalGridIdentifier("selected_tab");
     @Unique
-    private static final ResourceLocation UNSELECTED_TAB = ResourceLocation.fromNamespaceAndPath(MOD_ID, "unselected_tab");
+    private static final Identifier UNSELECTED_TAB = createUniversalGridIdentifier("unselected_tab");
 
     @Unique
     private static final int TAB_AMOUNT = 3;
@@ -50,41 +53,47 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
 
     @Unique
     @Override
-    public void universalgrid$renderGridTabs(final GuiGraphics graphics) {
+    public void universalgrid$renderGridTabs(final GuiGraphicsExtractor graphics, final boolean onlySelected) {
         if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
-            for (int i = 0; i < TAB_AMOUNT; i++) {
-                final GridTypes gridType = GridTypes.values()[i];
-                final boolean selected = i == ((MixinGridType) containerMenu).universalgrid$getGridType().ordinal();
+            final int selectedIndex = ((MixinGridType) containerMenu).universalgrid$getGridType().ordinal();
 
+            if (!onlySelected) {
+                for (int i = 0; i < TAB_AMOUNT; i++) {
+                    if (i == selectedIndex) {
+                        continue;
+                    }
+
+                    final GridTypes gridType = GridTypes.values()[i];
+                    final int x = this.universalgrid$getTabX();
+                    final int y = this.universalgrid$getTabY(i);
+
+                    graphics.blitSprite(GUI_TEXTURED, UNSELECTED_TAB, x, y, 32, 26);
+                    graphics.item(gridType.getIcon(), x + 9, y + 5);
+                }
+            } else {
+                final GridTypes selectedType = GridTypes.values()[selectedIndex];
                 final int x = this.universalgrid$getTabX();
-                final int y = this.universalgrid$getTabY(i);
+                final int y = this.universalgrid$getTabY(selectedIndex);
 
-                final PoseStack poseStack = graphics.pose();
-                poseStack.pushPose();
-                poseStack.translate(0.0F, 0.0F, selected ? 1.0F : 0.0F);
-
-                graphics.blitSprite(selected
-                    ? (i == TAB_AMOUNT - 1 ? SELECTED_TAB_BOTTOM : SELECTED_TAB)
-                    : UNSELECTED_TAB, x, y, 32, 26);
-                graphics.renderItem(gridType.getIcon(), x + 9, y + 5);
-
-                poseStack.popPose();
+                graphics.blitSprite(GUI_TEXTURED, selectedIndex == TAB_AMOUNT - 1 ? SELECTED_TAB_BOTTOM : SELECTED_TAB, x, y, 32, 26);
+                graphics.item(selectedType.getIcon(), x + 9, y + 5);
             }
         }
     }
 
-    @Inject(method = "renderTooltip", at = @At("HEAD"))
-    protected void renderTooltip(final GuiGraphics graphics, final int mouseX, final int mouseY, final CallbackInfo ci) {
-        final int hoveringTab = this.universalgrid$getHoveringTab(mouseX, mouseY);
+    @Inject(method = "extractTooltip", at = @At("HEAD"))
+    protected void extractTooltip(final GuiGraphicsExtractor graphics, final int x, final int y, final CallbackInfo ci) {
+        final int hoveringTab = this.universalgrid$getHoveringTab(x, y);
         if (hoveringTab != -1) {
             final GridTypes gridType = GridTypes.values()[hoveringTab];
-            Platform.INSTANCE.renderTooltip(graphics, List.of(ClientTooltipComponent.create(gridType.getTooltip().getVisualOrderText())), mouseX, mouseY);
+            final List<ClientTooltipComponent> tooltip = List.of(ClientTooltipComponent.create(gridType.getTooltip().getVisualOrderText()));
+            graphics.tooltip(this.font, tooltip, x, y, DefaultTooltipPositioner.INSTANCE, null);
         }
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    public void mouseClicked(final double mouseX, final double mouseY, final int clickedButton, final CallbackInfoReturnable<Boolean> cir) {
-        final int hoveringTab = this.universalgrid$getHoveringTab(mouseX, mouseY);
+    public void mouseClicked(final MouseButtonEvent event, final boolean doubleClick, final CallbackInfoReturnable<Boolean> cir) {
+        final int hoveringTab = this.universalgrid$getHoveringTab(event.x(), event.y());
         if (hoveringTab != -1) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
@@ -95,7 +104,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
     }
 
     @Override
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
+    public boolean keyPressed(final KeyEvent event) {
         if (KeyMappings.INSTANCE.getSwitchWirelessUniversalGridType() != null
             && Platform.INSTANCE.isKeyDown(KeyMappings.INSTANCE.getSwitchWirelessUniversalGridType())) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
@@ -106,7 +115,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
             return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Unique
