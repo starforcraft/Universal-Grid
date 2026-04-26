@@ -6,7 +6,7 @@ import com.ultramega.universalgrid.common.gui.view.GridTypes;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.interfaces.MixinGridType;
 
-import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
+import com.refinedmods.refinedstorage.common.api.support.slotreference.PlayerSlotReference;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 import com.refinedmods.refinedstorage.common.support.packet.c2s.C2SPackets;
 
@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMenu implements MixinDisabledSlot, MixinGridType {
     @Shadow(remap = false)
     @Nullable
-    protected SlotReference disabledSlot;
+    protected PlayerSlotReference disabledSlot;
 
     protected MixinAbstractBaseContainerMenu(@Nullable final MenuType<?> menuType, final int containerId) {
         super(menuType, containerId);
@@ -31,12 +31,12 @@ public abstract class MixinAbstractBaseContainerMenu extends AbstractContainerMe
     @Unique
     @Nullable
     @Override
-    public SlotReference universalgrid$getDisabledSlot() {
+    public PlayerSlotReference universalgrid$getDisabledSlot() {
         return this.disabledSlot;
     }
 
     @Override
-    public void universalgrid$setDisabledSlot(final SlotReference slotReference) {
+    public void universalgrid$setDisabledSlot(final PlayerSlotReference slotReference) {
         this.disabledSlot = slotReference;
     }
 

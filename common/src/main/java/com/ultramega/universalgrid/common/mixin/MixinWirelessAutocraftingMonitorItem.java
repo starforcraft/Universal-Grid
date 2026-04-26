@@ -3,7 +3,7 @@ package com.ultramega.universalgrid.common.mixin;
 import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 
 import com.refinedmods.refinedstorage.common.api.support.network.item.NetworkItemContext;
-import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
+import com.refinedmods.refinedstorage.common.api.support.slotreference.PlayerSlotReference;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.WirelessAutocraftingMonitorItem;
 
 import net.minecraft.network.chat.Component;
@@ -19,15 +19,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WirelessAutocraftingMonitorItem.class)
 public class MixinWirelessAutocraftingMonitorItem {
     @Unique
-    private SlotReference universalgrid$disabledSlot;
+    private PlayerSlotReference universalgrid$disabledSlot;
 
     @Inject(method = "use", at = @At("HEAD"))
     protected void use(final Component name,
                        final ServerPlayer player,
-                       final SlotReference slotReference,
+                       final PlayerSlotReference playerSlotReference,
                        final NetworkItemContext context,
                        final CallbackInfo ci) {
-        this.universalgrid$disabledSlot = slotReference;
+        this.universalgrid$disabledSlot = playerSlotReference;
     }
 
     @ModifyArg(method = "use", at = @At(value = "INVOKE", target =

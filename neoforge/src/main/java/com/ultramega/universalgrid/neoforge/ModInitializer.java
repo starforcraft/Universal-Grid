@@ -17,6 +17,7 @@ import com.refinedmods.refinedstorage.common.api.RefinedStorageApi;
 import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.neoforge.support.energy.EnergyStorageEnergyHandlerAdapter;
+import com.refinedmods.refinedstorage.neoforge.support.energy.ItemAccessEnergyItemContext;
 
 import java.util.function.Supplier;
 
@@ -155,8 +156,7 @@ public class ModInitializer extends AbstractModInitializer {
         event.registerItem(
             Capabilities.Energy.ITEM,
             (stack, ctx) -> new EnergyStorageEnergyHandlerAdapter(
-                Items.INSTANCE.getWirelessUniversalGrid().createEnergyStorage(stack)
-            ),
+                WirelessUniversalGridItem.createEnergyStorage(stack, new ItemAccessEnergyItemContext(ctx))),
             Items.INSTANCE.getWirelessUniversalGrid()
         );
     }

@@ -44,8 +44,8 @@
     "fabricloader": "*",
     "fabric-api": "*",
     "minecraft": "~26.1",
-    "refinedstorage": ">=3.0.0-beta.1",
-    "refinedstorage_quartz_arsenal": ">=2.0.0",
+    "refinedstorage": ">=3.0.0-beta.6",
+    "refinedstorage_quartz_arsenal": ">=2.0.4",
     "java": ">=25",
     "cloth-config2": "*",
     "team_reborn_energy": "*"

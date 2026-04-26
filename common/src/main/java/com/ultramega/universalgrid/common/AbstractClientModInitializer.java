@@ -17,6 +17,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public abstract class AbstractClientModInitializer {
     private static boolean wasDown = false;
@@ -50,7 +51,7 @@ public abstract class AbstractClientModInitializer {
                 GridSelectionOverlay.INSTANCE.stopAndSelect();
             } else {
                 // Was a short press -> use grid
-                RefinedStorageApi.INSTANCE.useSlotReferencedItem(
+                RefinedStorageApi.INSTANCE.usePlayerSlotReferencedItem(
                     player,
                     Items.INSTANCE.getWirelessUniversalGrid(),
                     Items.INSTANCE.getCreativeWirelessUniversalGrid()
@@ -71,12 +72,12 @@ public abstract class AbstractClientModInitializer {
             && proxy.universalgrid$ensureLoaded() instanceof AccessorRefinedStorageApiImpl accessor) {
             final Set<Item> validItems = Set.of(Items.INSTANCE.getWirelessUniversalGrid(), Items.INSTANCE.getCreativeWirelessUniversalGrid());
 
-            accessor.getSlotReferenceProvider().findForUse(player, (Item) validItems.toArray()[0], validItems)
-                .ifPresent((slotReference) ->
-                    slotReference.resolve(player).ifPresent((grid) -> {
-                        PlatformProxy.getConfig().getWirelessUniversalGrid().setGridType(gridType);
-                        Platform.INSTANCE.sendPacketToServer(new UseUniversalGridOnServerPacket(grid, slotReference, gridType));
-                    }));
+            accessor.getPlayerSlotReferenceProvider().findForUse(player, (Item) validItems.toArray()[0], validItems)
+                .ifPresent((slotReference) -> {
+                    final ItemStack grid = slotReference.get(player);
+                    PlatformProxy.getConfig().getWirelessUniversalGrid().setGridType(gridType);
+                    Platform.INSTANCE.sendPacketToServer(new UseUniversalGridOnServerPacket(grid, slotReference, gridType));
+                });
         }
     }
 }

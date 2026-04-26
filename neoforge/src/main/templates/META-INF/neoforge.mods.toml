@@ -17,11 +17,11 @@ config="universalgrid.mixins.json"
 [[dependencies.universalgrid]]
 modId = "refinedstorage_quartz_arsenal"
 type = "required"
-versionRange = "2.0.0"
+versionRange = "2.0.4"
 side = "BOTH"
 
 [[dependencies.universalgrid]]
 modId = "refinedstorage"
 type = "required"
-versionRange = "3.0.0-beta.1"
+versionRange = "3.0.0-beta.6"
 side = "BOTH"

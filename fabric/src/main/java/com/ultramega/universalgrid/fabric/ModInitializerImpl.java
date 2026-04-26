@@ -18,6 +18,7 @@ import com.refinedmods.refinedstorage.common.content.DirectRegistryCallback;
 import com.refinedmods.refinedstorage.common.content.RegistryCallback;
 import com.refinedmods.refinedstorage.common.support.packet.PacketHandler;
 import com.refinedmods.refinedstorage.fabric.api.RefinedStoragePlugin;
+import com.refinedmods.refinedstorage.fabric.support.energy.ContainerItemContextEnergyItemContext;
 import com.refinedmods.refinedstorage.fabric.support.energy.EnergyStorageAdapter;
 
 import me.shedaniel.autoconfig.AutoConfig;
@@ -118,10 +119,8 @@ public class ModInitializerImpl extends AbstractModInitializer implements Refine
 
     private void registerEnergyItemProviders() {
         EnergyStorage.ITEM.registerForItems(
-            (stack, context) ->
-                new EnergyStorageAdapter(Items.INSTANCE.getWirelessUniversalGrid().createEnergyStorage(stack)),
-            Items.INSTANCE.getWirelessUniversalGrid()
-        );
+            (stack, context) -> new EnergyStorageAdapter(WirelessUniversalGridItem.createEnergyStorage(stack,
+                new ContainerItemContextEnergyItemContext(context))), Items.INSTANCE.getWirelessUniversalGrid());
     }
 
     private void registerCreativeModeTabListener(final RefinedStorageApi refinedStorageApi) {

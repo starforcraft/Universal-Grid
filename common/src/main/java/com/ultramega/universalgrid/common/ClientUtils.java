@@ -5,11 +5,12 @@ import com.ultramega.universalgrid.common.interfaces.MixinDisabledSlot;
 import com.ultramega.universalgrid.common.packet.c2s.SetCursorPosStackPacket;
 import com.ultramega.universalgrid.common.registry.Items;
 
-import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
+import com.refinedmods.refinedstorage.common.api.support.slotreference.PlayerSlotReference;
 import com.refinedmods.refinedstorage.common.support.AbstractBaseContainerMenu;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -17,7 +18,7 @@ public class ClientUtils {
     private ClientUtils() {
     }
 
-    public static void updateCursorPos(final SlotReference gridSlot, final GridTypes gridType) {
+    public static void updateCursorPos(final PlayerSlotReference gridSlot, final GridTypes gridType) {
         final double[] x = new double[1];
         final double[] y = new double[1];
 
@@ -33,11 +34,10 @@ public class ClientUtils {
     }
 
     public static boolean isUniversalGrid(final AbstractBaseContainerMenu menu, @Nullable final Player player) {
-        final SlotReference gridSlot = ((MixinDisabledSlot) menu).universalgrid$getDisabledSlot();
+        final PlayerSlotReference gridSlot = ((MixinDisabledSlot) menu).universalgrid$getDisabledSlot();
         if (gridSlot != null && player != null) {
-            return gridSlot.resolve(player)
-                .map(stack -> stack.is(Items.INSTANCE.getWirelessUniversalGrid()) || stack.is(Items.INSTANCE.getCreativeWirelessUniversalGrid()))
-                .orElse(false);
+            final ItemStack stack = gridSlot.get(player);
+            return stack.is(Items.INSTANCE.getWirelessUniversalGrid()) || stack.is(Items.INSTANCE.getCreativeWirelessUniversalGrid());
         }
 
         return false;

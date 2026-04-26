@@ -5,7 +5,7 @@ import com.ultramega.universalgrid.common.interfaces.MixinPlayer;
 import com.ultramega.universalgrid.common.interfaces.MixinUpdateSlot;
 import com.ultramega.universalgrid.common.packet.s2c.SetDisabledSlotPacket;
 
-import com.refinedmods.refinedstorage.common.api.support.slotreference.SlotReference;
+import com.refinedmods.refinedstorage.common.api.support.slotreference.PlayerSlotReference;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AbstractAutocraftingMonitorContainerMenu;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.AutocraftingMonitorData;
 import com.refinedmods.refinedstorage.common.autocrafting.monitor.WirelessAutocraftingMonitorContainerMenu;
@@ -27,12 +27,12 @@ public abstract class MixinWirelessAutocraftingMonitorContainerMenu extends Abst
     }
 
     @Override
-    public void universalgrid$setDisabledSlot(final SlotReference disabledSlot) {
+    public void universalgrid$setDisabledSlot(final PlayerSlotReference disabledSlot) {
         this.disabledSlot = disabledSlot;
     }
 
     @Override
-    public @Nullable SlotReference universalgrid$getDisabledSlot() {
+    public @Nullable PlayerSlotReference universalgrid$getDisabledSlot() {
         return this.disabledSlot;
     }
 
