@@ -20,33 +20,50 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class AbstractClientModInitializer {
-    private static boolean wasDown = false;
+    private static boolean activePress = false;
+    private static boolean holdTriggered = false;
     private static long pressTime = 0;
     private static final long HOLD_TIME = 200;
 
     protected static void tickInputEvents() {
-        final Player player = Minecraft.getInstance().player;
-        if (player == null) {
-            return;
-        }
-
         final KeyMapping key = KeyMappings.INSTANCE.getOpenWirelessUniversalGrid();
         if (key == null) {
+            resetInputState();
             return;
         }
 
-        final boolean isDown = key.isDown();
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.screen != null) {
+            resetInputState();
+            drainClicks(key);
+            return;
+        }
+
+        final Player player = mc.player;
+        if (player == null) {
+            resetInputState();
+            drainClicks(key);
+            return;
+        }
+
+        final long now = System.currentTimeMillis();
 
         // Key pressed
-        if (isDown && !wasDown) {
-            pressTime = System.currentTimeMillis();
+        while (key.consumeClick()) {
+            if (!activePress) {
+                activePress = true;
+                holdTriggered = false;
+                pressTime = now;
+            }
+        }
+
+        if (!activePress) {
+            return;
         }
 
         // Key released
-        if (!isDown && wasDown) {
-            final long heldDuration = System.currentTimeMillis() - pressTime;
-
-            if (heldDuration >= HOLD_TIME) {
+        if (!key.isDown()) {
+            if (holdTriggered) {
                 // Was held -> stop and select grid
                 GridSelectionOverlay.INSTANCE.stopAndSelect();
             } else {
@@ -57,14 +74,28 @@ public abstract class AbstractClientModInitializer {
                     Items.INSTANCE.getCreativeWirelessUniversalGrid()
                 );
             }
+
+            resetInputState();
+            return;
         }
 
-        // While holding
-        if (isDown && (System.currentTimeMillis() - pressTime >= HOLD_TIME)) {
-            GridSelectionOverlay.INSTANCE.open((gridType) -> AbstractClientModInitializer.switchGridType(player, gridType));
+        if (!holdTriggered && now - pressTime >= HOLD_TIME) {
+            holdTriggered = true;
+            GridSelectionOverlay.INSTANCE.open((gridType) -> switchGridType(player, gridType));
         }
+    }
 
-        wasDown = isDown;
+    private static void drainClicks(final KeyMapping key) {
+        while (key.consumeClick()) {
+            // Discard stale activations from GUI/context transitions
+            continue;
+        }
+    }
+
+    private static void resetInputState() {
+        activePress = false;
+        holdTriggered = false;
+        pressTime = 0;
     }
 
     private static void switchGridType(final Player player, final GridTypes gridType) {
