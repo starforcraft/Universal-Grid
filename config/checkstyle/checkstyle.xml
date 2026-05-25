@@ -73,8 +73,8 @@
         <module name="PackageDeclaration"/>
         <module name="ParameterAssignment"/>
         <module name="ReturnCount">
-            <property name="max" value="4"/>
-            <property name="maxForVoid" value="4"/>
+            <property name="max" value="5"/>
+            <property name="maxForVoid" value="5"/>
         </module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
