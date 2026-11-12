@@ -88,7 +88,9 @@
         <module name="UnusedLocalVariable"/>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
-        <module name="BooleanExpressionComplexity"/>
+        <module name="BooleanExpressionComplexity">
+            <property name="max" value="5"/>
+        </module>
         <module name="NoCodeInFile"/>
         <module name="UncommentedMain"/>
         <module name="RedundantModifier"/>

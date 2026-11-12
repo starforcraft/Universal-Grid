@@ -26,6 +26,9 @@
     ],
     "modmenu": [
       "com.ultramega.universalgrid.fabric.ModMenuApiImpl"
+    ],
+    "jei_mod_plugin": [
+      "com.ultramega.universalgrid.common.compat.jei.JeiModPlugin"
     ]
   },
   "custom": {
