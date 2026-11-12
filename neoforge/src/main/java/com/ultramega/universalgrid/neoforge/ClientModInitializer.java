@@ -20,6 +20,7 @@ import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.cre
 public class ClientModInitializer extends AbstractClientModInitializer {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent e) {
+        registerHeldGridInput();
         NeoForge.EVENT_BUS.addListener(ClientModInitializer::onClientTick);
     }
 

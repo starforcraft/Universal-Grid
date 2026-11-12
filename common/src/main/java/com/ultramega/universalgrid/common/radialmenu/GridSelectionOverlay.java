@@ -80,6 +80,7 @@ public class GridSelectionOverlay extends RadialMenuRenderer<GridTypes> {
             Minecraft.getInstance().mouseHandler.grabMouse();
         }
         this.displayedGrid = null;
+        this.onSelectGrid = null;
         this.clearState();
     }
 }

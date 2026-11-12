@@ -19,6 +19,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -46,6 +47,10 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
 
     @Unique
     private static final int TAB_AMOUNT = 3;
+    @Unique
+    private static final int TAB_WIDTH = 32;
+    @Unique
+    private static final int TAB_HEIGHT = 26;
 
     public MixinAbstractBaseScreen(final T menu, final Inventory playerInventory, final Component title) {
         super(menu, playerInventory, title);
@@ -54,8 +59,8 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
     @Unique
     @Override
     public void universalgrid$renderGridTabs(final GuiGraphicsExtractor graphics, final boolean onlySelected) {
-        if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
-            final int selectedIndex = ((MixinGridType) containerMenu).universalgrid$getGridType().ordinal();
+        if (this.universalgrid$hasGridTabs()) {
+            final int selectedIndex = ((MixinGridType) this.getMenu()).universalgrid$getGridType().ordinal();
 
             if (!onlySelected) {
                 for (int i = 0; i < TAB_AMOUNT; i++) {
@@ -67,7 +72,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
                     final int x = this.universalgrid$getTabX();
                     final int y = this.universalgrid$getTabY(i);
 
-                    graphics.blitSprite(GUI_TEXTURED, UNSELECTED_TAB, x, y, 32, 26);
+                    graphics.blitSprite(GUI_TEXTURED, UNSELECTED_TAB, x, y, TAB_WIDTH, TAB_HEIGHT);
                     graphics.item(gridType.getIcon(), x + 9, y + 5);
                 }
             } else {
@@ -75,10 +80,22 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
                 final int x = this.universalgrid$getTabX();
                 final int y = this.universalgrid$getTabY(selectedIndex);
 
-                graphics.blitSprite(GUI_TEXTURED, selectedIndex == TAB_AMOUNT - 1 ? SELECTED_TAB_BOTTOM : SELECTED_TAB, x, y, 32, 26);
+                graphics.blitSprite(GUI_TEXTURED, selectedIndex == TAB_AMOUNT - 1 ? SELECTED_TAB_BOTTOM : SELECTED_TAB, x, y, TAB_WIDTH, TAB_HEIGHT);
                 graphics.item(selectedType.getIcon(), x + 9, y + 5);
             }
         }
+    }
+
+    @Unique
+    @Override
+    public List<Rect2i> universalgrid$getGridTabExclusionAreas() {
+        if (!this.universalgrid$hasGridTabs()) {
+            return List.of();
+        }
+
+        final int tabRight = this.universalgrid$getTabX() + TAB_WIDTH;
+        final int screenRight = this.leftPos + this.imageWidth;
+        return List.of(new Rect2i(screenRight, this.universalgrid$getTabY(0), tabRight - screenRight, TAB_HEIGHT * TAB_AMOUNT));
     }
 
     @Inject(method = "extractTooltip", at = @At("HEAD"))
@@ -120,7 +137,7 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
 
     @Unique
     private int universalgrid$getHoveringTab(final double mouseX, final double mouseY) {
-        if (this.getMenu() instanceof AbstractBaseContainerMenu containerMenu && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player)) {
+        if (this.universalgrid$hasGridTabs()) {
             for (int i = 0; i < TAB_AMOUNT; i++) {
                 if (this.isHovering(this.universalgrid$getTabX() - this.leftPos + 3, this.universalgrid$getTabY(i) - this.topPos + 2, 24, 22, mouseX, mouseY)) {
                     return i;
@@ -132,6 +149,12 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
     }
 
     @Unique
+    private boolean universalgrid$hasGridTabs() {
+        return this.getMenu() instanceof AbstractBaseContainerMenu containerMenu
+            && ClientUtils.isUniversalGrid(containerMenu, Minecraft.getInstance().player);
+    }
+
+    @Unique
     private int universalgrid$getTabX() {
         final boolean isAutocraftingMonitor = ((MixinGridType) this.getMenu()).universalgrid$getGridType() == GridTypes.WIRELESS_AUTOCRAFTING_MONITOR;
 
@@ -140,6 +163,6 @@ public abstract class MixinAbstractBaseScreen<T extends AbstractContainerMenu> e
 
     @Unique
     private int universalgrid$getTabY(final int i) {
-        return this.topPos + this.imageHeight - (26 * TAB_AMOUNT) + (26 * i);
+        return this.topPos + this.imageHeight - (TAB_HEIGHT * TAB_AMOUNT) + (TAB_HEIGHT * i);
     }
 }

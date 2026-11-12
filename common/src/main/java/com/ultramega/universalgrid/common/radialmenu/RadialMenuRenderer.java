@@ -4,7 +4,6 @@ import com.ultramega.universalgrid.common.MathUtils;
 import com.ultramega.universalgrid.common.PlatformProxy;
 import com.ultramega.universalgrid.common.mixin.AccessorGuiGraphicsExtractor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -31,7 +30,10 @@ public abstract class RadialMenuRenderer<T> {
     public static final float OUTER = 100;
     public static final float MIDDLE_DISTANCE = (INNER + OUTER) / 2F;
 
-    private static final float DRAWS = 300;
+    private static final int ITEM_SIZE = 16;
+    private static final float ICON_SCALE = 1.5F;
+    private static final int ICON_LABEL_GAP = 4;
+    private static final float LABEL_SCALE = 0.6F;
 
     protected int lastIndexUnderMouse = -1;
 
@@ -97,38 +99,35 @@ public abstract class RadialMenuRenderer<T> {
             }
         }
 
-        record PositionedText(float x, float y, Component text) {
-        }
-
-        final List<PositionedText> textToDraw = new ArrayList<>(entries.size());
-
-        float position = 0;
-        for (final T key : entries) {
-            final float degrees = 270 + 360 * (position++ / count);
-            final float angle = Mth.DEG_TO_RAD * degrees;
-            final float x = Mth.cos(angle) * RadialMenuRenderer.MIDDLE_DISTANCE;
-            final float y = Mth.sin(angle) * RadialMenuRenderer.MIDDLE_DISTANCE;
-
-            final ItemStack icon = this.getIcon(key);
-            if (!icon.isEmpty()) {
-                textToDraw.add(new PositionedText(x, y, this.getTitle(key)));
-
-                graphics.item(icon, Math.round(x - 8), Math.round(y - 8 - 2 - 9));
-            }
-        }
-
+        graphics.nextStratum();
         final Font font = mc.font;
-        if (!textToDraw.isEmpty()) {
-            for (final PositionedText toDraw : textToDraw) {
+        final float labelHeight = font.lineHeight * LABEL_SCALE;
+        for (int i = 0; i < count; i++) {
+            final T entry = entries.get(i);
+            final float degrees = 270F + angleSize * i;
+            final float angle = Mth.DEG_TO_RAD * degrees;
+            final float x = Mth.cos(angle) * MIDDLE_DISTANCE;
+            final float y = Mth.sin(angle) * MIDDLE_DISTANCE;
+
+            final ItemStack icon = this.getIcon(entry);
+            final boolean hasIcon = !icon.isEmpty();
+            final float iconSize = ITEM_SIZE * ICON_SCALE;
+            final float labelOffset = hasIcon ? iconSize + ICON_LABEL_GAP : 0;
+            final float top = y - (labelOffset + labelHeight) / 2F;
+            if (hasIcon) {
                 poseStack.pushMatrix();
-                {
-                    poseStack.translate(toDraw.x, toDraw.y);
-                    poseStack.scale(0.6F, 0.6F);
-                    final Component text = toDraw.text;
-                    graphics.text(font, text.getVisualOrderText(), (int) (-font.width(text) / 2F), 8, 0xCCFFFFFF, true);
-                }
+                poseStack.translate(Math.round(x - iconSize / 2F), Math.round(top));
+                poseStack.scale(ICON_SCALE);
+                graphics.fakeItem(icon, 0, 0);
                 poseStack.popMatrix();
             }
+
+            final Component title = this.getTitle(entry);
+            poseStack.pushMatrix();
+            poseStack.translate(x, top + labelOffset);
+            poseStack.scale(LABEL_SCALE);
+            graphics.text(font, title.getVisualOrderText(), -font.width(title) / 2, 0, 0xCCFFFFFF, true);
+            poseStack.popMatrix();
         }
 
         poseStack.popMatrix();

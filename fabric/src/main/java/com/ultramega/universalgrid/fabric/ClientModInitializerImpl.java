@@ -24,6 +24,7 @@ import static com.ultramega.universalgrid.common.UniversalGridIdentifierUtil.cre
 public class ClientModInitializerImpl extends AbstractClientModInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        registerHeldGridInput();
         this.registerKeyMappings();
         this.registerPacketHandlers();
     }
